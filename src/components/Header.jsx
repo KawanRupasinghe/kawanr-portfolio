@@ -13,6 +13,63 @@ export default function Header() {
     document.documentElement.dataset.theme = theme;
   }, []);
 
+  // Highlight active nav item while scrolling using IntersectionObserver
+  React.useEffect(() => {
+    const nav = document.querySelector('.nav');
+    if (!nav) return;
+    const links = Array.from(nav.querySelectorAll('a[href^="#"]'));
+    if (!links.length) return;
+
+    const map = new Map();
+    const sections = links
+      .map(a => {
+        const id = a.getAttribute('href');
+        try { return document.querySelector(id); } catch { return null; }
+      })
+      .filter(Boolean);
+
+    // Also observe the hero (#top) so we can avoid highlighting About while at the top
+    const hero = document.querySelector('#top');
+    if (hero) sections.push(hero);
+
+    let currentId = null;
+    const setActive = (id) => {
+      if (currentId === id) return;
+      currentId = id;
+      links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${id}`));
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => map.set(entry.target.id, entry));
+      // If hero is significantly visible, clear any active state and disable nav hover visuals
+      const heroEntry = map.get('top');
+      const heroVisible = !!(heroEntry && heroEntry.isIntersecting && heroEntry.intersectionRatio >= 0.3);
+      document.documentElement.classList.toggle('at-hero', heroVisible);
+      if (heroVisible) {
+        links.forEach(a => a.classList.remove('active'));
+        currentId = null;
+        return;
+      }
+
+      // Pick the most visible section in viewport (excluding hero)
+      let maxRatio = 0; let best = currentId;
+      map.forEach((e, id) => {
+        if (id === 'top') return;
+        if (e.isIntersecting && e.intersectionRatio >= maxRatio) {
+          maxRatio = e.intersectionRatio; best = id;
+        }
+      });
+      if (best) setActive(best);
+    }, {
+      root: null,
+      threshold: [0.15, 0.3, 0.5, 0.65, 0.8],
+      rootMargin: "-25% 0px -45% 0px" // favor middle slightly more
+    });
+
+    sections.forEach(sec => { observer.observe(sec); });
+    return () => { sections.forEach(sec => observer.unobserve(sec)); observer.disconnect(); };
+  }, []);
+
   const toggleTheme = () => {
     const cur = document.documentElement.dataset.theme;
     const next = cur === "dark" ? "light" : "dark";
