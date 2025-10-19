@@ -1,23 +1,25 @@
+import { Briefcase } from "lucide-react";
 import { profile } from "../data";
 
 export default function Experience() {
   return (
     <section id="experience" className="container section">
       <h2 className="section__title">Experience</h2>
-      <div className="timeline">
+      <div className="xp-list">
         {profile.experience.map((e, i) => (
-          <div className="timeline__item rise" key={i}>
-            <div className="timeline__dot" />
-            <div className="timeline__card">
-              <header className="timeline__header">
-                <h3>{e.role}</h3>
-                <span className="muted">{e.company} • {e.period}</span>
-              </header>
-              <ul className="card__list">
-                {e.points.map((p, j) => <li key={j}>{p}</li>)}
-              </ul>
-            </div>
-          </div>
+              <article className="xp-card category card glass show rise" key={i}>
+                <header className="category__header">
+                  <h3 className="category__title">{e.role}</h3>
+                  <span className="category__crest" aria-hidden="true" title="Experience">
+                    <span className="crest__glow" />
+                    <span className="crest__icon"><Briefcase size={18} /></span>
+                  </span>
+                </header>
+                <span className="xp-meta">{e.company} <span className="sep">•</span> {e.period}</span>
+            <ul className="xp-points">
+              {e.points.map((p, j) => <li className="rise xp-point" key={j}>{p}</li>)}
+            </ul>
+          </article>
         ))}
       </div>
     </section>
