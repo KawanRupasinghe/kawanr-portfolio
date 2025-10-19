@@ -1,3 +1,4 @@
+import { FileDown, Mail } from "lucide-react";
 import { profile } from "../data";
 
 export default function Hero() {
@@ -9,8 +10,14 @@ export default function Hero() {
         <p className="role">{profile.role}</p>
         <p className="blurb">{profile.blurb}</p>
         <div className="cta">
-          <a className="btn" href="#projects">View Projects</a>
-          <a className="btn outline" href="#contact">Contact Me</a>
+          <a className="btn" href="/kawan-rupasinghe.pdf" download>
+            <FileDown size={18} />
+            Download CV
+          </a>
+          <a className="btn outline" href="#contact">
+            <Mail size={18} />
+            Contact Me
+          </a>
         </div>
       </div>
 
