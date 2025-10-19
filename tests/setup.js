@@ -24,3 +24,19 @@ expect.extend(matchers);
 afterEach(() => {
   cleanup();
 });
+
+// Polyfill IntersectionObserver for jsdom (needed by Header active-on-scroll logic)
+if (typeof window !== "undefined" && !('IntersectionObserver' in window)) {
+  class MockIntersectionObserver {
+    constructor(callback, options) {
+      this._callback = callback;
+      this._options = options;
+    }
+    observe() { /* no-op */ }
+    unobserve() { /* no-op */ }
+    disconnect() { /* no-op */ }
+    takeRecords() { return []; }
+  }
+  window.IntersectionObserver = MockIntersectionObserver;
+  global.IntersectionObserver = MockIntersectionObserver;
+}
