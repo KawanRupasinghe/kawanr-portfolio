@@ -1,0 +1,299 @@
+/* =========================================================
+   Minimal Creative Portfolio — Full Styles (Blue Theme, v4.1)
+   - Header more transparent
+   - Abstract background (animated blobs + faint diagonals)
+   - Hero photo now CIRCULAR
+   ========================================================= */
+
+/* ===== Theme tokens (blue palette only) ===== */
+:root{
+  /* DARK defaults */
+  --bg: #0b1424;           /* deep, clean navy */
+  --bg-soft: #0f1c31;      /* soft panel navy */
+  --text: #e8f0ff;         /* cool off-white */
+  --muted: #a5b7d8;        /* muted blue-gray */
+  --card: rgba(255,255,255,.04);
+  --border: rgba(255,255,255,.12);
+
+  /* Accent blues (no purple) */
+  --a1: #0d47a1;           /* royal navy blue */
+  --a2: #2196f3;           /* vivid azure blue */
+
+  /* Derived */
+  --accent: color-mix(in oklab, var(--a1), var(--a2));
+  --ring: color-mix(in oklab, var(--a2), transparent 70%);
+  --brand-font: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "SF Pro";
+
+  --header-h: 68px;        /* header visual height */
+}
+
+:root[data-theme="light"]{
+  --bg: #f3f7ff;           /* very light cool blue */
+  --bg-soft: #ffffff;
+  --text: #0a1222;         /* navy text for contrast */
+  --muted: #4e5f85;        /* cool gray-blue */
+  --card: rgba(0,0,0,.04);
+  --border: rgba(0,0,0,.08);
+  --ring: color-mix(in oklab, var(--a2), transparent 78%);
+}
+
+/* ===== Base ===== */
+*{ box-sizing:border-box }
+html,body,#root{ height:100% }
+body{
+  margin:0; color:var(--text); background: var(--bg);
+  font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "SF Pro";
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ===== Abstract Background (animated blobs + faint diagonal texture) ===== */
+.bg-scene{
+  position: fixed; inset: 0; z-index:-2; pointer-events:none;
+  background:
+    radial-gradient(60% 60% at 12% 12%, color-mix(in oklab, var(--a1), transparent 78%) 0%, transparent 60%),
+    radial-gradient(60% 60% at 85% 18%, color-mix(in oklab, var(--a2), transparent 78%) 0%, transparent 60%),
+    conic-gradient(from 180deg at 50% 120%, color-mix(in oklab, var(--a1), transparent 92%), color-mix(in oklab, var(--a2), transparent 92%));
+  filter: saturate(1.04) blur(0.2px);
+  overflow: hidden;
+}
+.bg-scene::before,
+.bg-scene::after{
+  content:""; position:absolute; inset:auto; pointer-events:none; border-radius:50%;
+  filter: blur(36px); opacity:.18; animation: float 18s ease-in-out infinite;
+}
+.bg-scene::before{
+  width: 42vmin; height: 42vmin; left: 8%; top: 12%;
+  background: radial-gradient(circle at 30% 30%, color-mix(in oklab, var(--a1), white 10%), transparent 55%);
+  animation-delay: -6s;
+}
+.bg-scene::after{
+  width: 46vmin; height: 46vmin; right: 8%; top: 14%;
+  background: radial-gradient(circle at 70% 30%, color-mix(in oklab, var(--a2), white 4%), transparent 55%);
+}
+body::after{
+  content:""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  opacity: .06;
+  background:
+    repeating-linear-gradient(135deg,
+      rgba(255,255,255,.12) 0px,
+      rgba(255,255,255,.12) 1px,
+      transparent 1px,
+      transparent 18px
+    );
+}
+@keyframes float {
+  0%   { transform: translateY(0) translateX(0) scale(1); }
+  50%  { transform: translateY(12px) translateX(-8px) scale(1.02); }
+  100% { transform: translateY(0) translateX(0) scale(1); }
+}
+
+/* ===== Layout ===== */
+.container{ width:min(1120px,92%); margin-inline:auto; }
+main, .section, .hero { position: relative; z-index: 1; display:block; }
+.section{ padding:44px 0; scroll-margin-top: 88px; }
+.section__title{ font-size:26px; margin:0 0 12px; }
+
+/* ===== Smooth, full-bleed header with side fades (more transparent) ===== */
+.header{
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  padding: 14px 0;
+  min-height: var(--header-h);
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.header::before{
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: var(--header-h);
+  background: color-mix(in oklab, var(--bg), transparent 78%);
+  backdrop-filter: blur(10px) saturate(1.15);
+  -webkit-backdrop-filter: blur(10px) saturate(1.15);
+  box-shadow: 0 8px 24px color-mix(in oklab, var(--a2), transparent 92%);
+  border-radius: 0 0 16px 16px;
+  pointer-events: none;
+  z-index: -1;
+  mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+}
+
+/* ===== Brand ===== */
+.brand{
+  font-family: var(--brand-font);
+  font-weight: 700;
+  letter-spacing: .6px;
+  text-decoration: none;
+  color: var(--text);
+  font-size: clamp(18px, 2.2vw, 22px);
+  line-height: 1;
+}
+
+/* ===== Nav + theme toggle ===== */
+.nav{
+  display:flex; align-items:center; gap:18px;
+  flex-wrap: wrap;
+}
+.nav a{color:var(--text); text-decoration:none; opacity:.9; white-space:nowrap}
+.nav a:hover{opacity:1}
+.icon-btn{
+  display:grid; place-items:center; width:36px; height:36px; border-radius:12px;
+  border:1px solid color-mix(in oklab, var(--a2), var(--border) 70%);
+  background: var(--bg-soft);
+  cursor:pointer;
+  transition: transform .12s ease, box-shadow .2s ease, border-color .2s ease;
+  flex: 0 0 auto;
+}
+.icon-btn:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(8, 36, 84, .18), 0 1px 2px rgba(0,0,0,.06);
+  border-color: color-mix(in oklab, var(--a2), var(--border) 45%);
+}
+.theme-icon{display:none}
+:root[data-theme="dark"] .show-in-dark{display:inline-flex}
+:root[data-theme="light"] .show-in-light{display:inline-flex}
+.icon-btn svg{ width:18px; height:18px; color:var(--text); opacity:.95 }
+
+/* ===== Hero (with circular photo) ===== */
+.hero{
+  display:grid; grid-template-columns: 1.2fr .8fr; gap:24px; padding:64px 0 20px;
+  align-items: center;
+}
+@media (max-width:900px){ .hero{ grid-template-columns:1fr } }
+
+.eyebrow{ margin:0; color:var(--muted) }
+.gradient-title{
+  margin:6px 0 10px; line-height:1.12;
+  font-size: clamp(32px, 6vw, 56px);
+  background: linear-gradient(90deg, var(--a1), var(--a2));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.role{ margin:0 0 4px; font-weight:700 }
+.blurb{ margin:0 0 16px; color:var(--muted) }
+.hero__tags{ display:flex; flex-wrap:wrap; gap:8px; align-content:start }
+
+/* circular portrait */
+.hero__photo-wrap{ display: grid; place-items: center; }
+.hero__photo{
+  width: min(320px, 90%);
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+
+  /* Circle change */
+  border-radius: 50%;
+
+  border: 1px solid color-mix(in oklab, var(--a2), var(--border) 60%);
+  box-shadow:
+    0 14px 40px rgba(8, 36, 84, .25),
+    0 2px 6px rgba(0,0,0,.08);
+  background: color-mix(in oklab, var(--bg-soft), white 0%);
+}
+
+/* ===== Buttons (blue gradient, natural shadow, no border line) ===== */
+.btn{
+  --g: linear-gradient(90deg, var(--a1), var(--a2));
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px 14px; min-height: 40px; border-radius: 14px;
+  border: 0; outline: 0;
+  background: var(--g); background-clip: padding-box;
+  color: white; text-decoration: none; white-space: nowrap; line-height: 1;
+  box-shadow: 0 6px 16px rgba(8, 36, 84, .18), 0 1px 2px rgba(0, 0, 0, .06);
+  transition: transform .12s ease, box-shadow .2s ease;
+  position: relative;
+}
+.btn:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(8, 36, 84, .22), 0 2px 4px rgba(0, 0, 0, .06);
+}
+.btn.outline{
+  background: transparent; color: var(--text); border: 0;
+  box-shadow: inset 0 0 0 1px rgba(33, 150, 243, .28), 0 1px 2px rgba(0,0,0,.04);
+}
+.btn.outline:hover{
+  box-shadow: inset 0 0 0 1px rgba(33, 150, 243, .40), 0 4px 12px rgba(8, 36, 84, .14);
+}
+
+/* Avoid button overlap in CTAs */
+.cta{ display:flex; gap:12px; flex-wrap: wrap; align-items:center; }
+.cta .btn{ flex: 0 0 auto; }
+
+/* ===== Pills ===== */
+.chip{
+  padding:6px 10px; border-radius:999px;
+  border:1px solid color-mix(in oklab, var(--a2), var(--border) 70%);
+  background: color-mix(in oklab, var(--bg), var(--card) 70%);
+  font-size:14px;
+}
+.chip-ghost{ background: color-mix(in oklab, var(--a2), transparent 92%); }
+
+/* ===== About ===== */
+.inline-list{ list-style:none; padding:0; display:flex; gap:18px; flex-wrap:wrap }
+.inline-list a{ color: var(--a2); text-decoration:none }
+
+/* ===== Grid / Cards / Projects ===== */
+.grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:16px }
+@media (max-width:900px){ .grid{ grid-template-columns:1fr } }
+.card{
+  background: var(--bg-soft); border:1px solid var(--border); border-radius:16px; padding:16px;
+  transition: transform .2s ease, box-shadow .25s ease, border-color .2s ease;
+  box-shadow: none;
+}
+.card:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(8, 36, 84, .16);
+  border-color: color-mix(in oklab, var(--a2), var(--border) 45%);
+}
+.project{ position:relative; overflow:hidden; }
+.project .arrow{ position:absolute; right:12px; bottom:10px; opacity:.7 }
+.tilt:hover{ transform: perspective(900px) rotateX(2deg) rotateY(-2deg) }
+
+/* ===== Glass accent (used in Skills) ===== */
+.glass{
+  background: linear-gradient(180deg, color-mix(in oklab, var(--a2), transparent 94%), color-mix(in oklab, var(--bg-soft), white 0%));
+  border:1px solid color-mix(in oklab, var(--a2), var(--border) 78%);
+  backdrop-filter: blur(6px);
+}
+
+/* ===== Timeline (Experience) ===== */
+.timeline{ position:relative; margin:24px 0 0; padding-left:14px }
+.timeline:before{ content:""; position:absolute; left:6px; top:0; bottom:0; width:2px; background: var(--border) }
+.timeline__item{ position:relative; margin:0 0 18px 0 }
+.timeline__dot{
+  position:absolute; left:-1px; top:6px; width:14px; height:14px; border-radius:50%;
+  background: linear-gradient(135deg, var(--a1), var(--a2));
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--a2), transparent 80%);
+}
+.timeline__card{ margin-left:20px }
+.card__list{ margin:8px 0 0 18px }
+
+/* ===== Skills ===== */
+.skills-grid{ display:grid; gap:12px; grid-template-columns: repeat(4, 1fr); }
+@media (max-width:900px){ .skills-grid{ grid-template-columns: repeat(2, 1fr) } }
+.skill{ display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; }
+.skill__dot{
+  width:10px; height:10px; border-radius:50%;
+  background: radial-gradient(circle at 30% 30%, var(--a1), var(--a2));
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--a2), transparent 85%);
+}
+.skill__name{ font-weight:600 }
+
+/* ===== Footer ===== */
+.footer{ padding:32px 0 60px; border-top:1px solid var(--border) }
+.muted{ color:var(--muted) }
+
+/* ===== Animations ===== */
+.fade-in{ animation: fade .7s ease both }
+.rise{ animation: rise .6s ease both }
+@keyframes fade{ from{opacity:0} to{opacity:1} }
+@keyframes rise{ from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:none} }
+
+/* ===== Safety ===== */
+.bg-scene { pointer-events: none; z-index: -2; }
+.section, .hero { position: relative !important; top:auto !important; left:auto !important; }
