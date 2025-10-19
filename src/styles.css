@@ -1,37 +1,35 @@
 /* =========================================================
-   Minimal Creative Portfolio — Full Styles (Blue Theme, v4.1)
-   - Header more transparent
-   - Abstract background (animated blobs + faint diagonals)
-   - Hero photo now CIRCULAR
+   Minimal Creative Portfolio — Full Styles (Blue Theme, v6.7)
+   - Header fixed; sections from About↓ centered
+   - Skills: CATEGORIES with masonry-like tiles (sm/md/lg/xl)
+   - Crest badge per category (emoji + glow) instead of counts
+   - Timeline typography slightly smaller
    ========================================================= */
 
 /* ===== Theme tokens (blue palette only) ===== */
 :root{
-  /* DARK defaults */
-  --bg: #0b1424;           /* deep, clean navy */
-  --bg-soft: #0f1c31;      /* soft panel navy */
-  --text: #e8f0ff;         /* cool off-white */
-  --muted: #a5b7d8;        /* muted blue-gray */
+  --bg: #0b1424;
+  --bg-soft: #0f1c31;
+  --text: #e8f0ff;
+  --muted: #a5b7d8;
   --card: rgba(255,255,255,.04);
   --border: rgba(255,255,255,.12);
 
-  /* Accent blues (no purple) */
-  --a1: #0d47a1;           /* royal navy blue */
-  --a2: #2196f3;           /* vivid azure blue */
+  --a1: #0d47a1;
+  --a2: #2196f3;
 
-  /* Derived */
   --accent: color-mix(in oklab, var(--a1), var(--a2));
   --ring: color-mix(in oklab, var(--a2), transparent 70%);
   --brand-font: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "SF Pro";
 
-  --header-h: 68px;        /* header visual height */
+  --header-h: 68px;
 }
 
 :root[data-theme="light"]{
-  --bg: #f3f7ff;           /* very light cool blue */
+  --bg: #f3f7ff;
   --bg-soft: #ffffff;
-  --text: #0a1222;         /* navy text for contrast */
-  --muted: #4e5f85;        /* cool gray-blue */
+  --text: #0a1222;
+  --muted: #4e5f85;
   --card: rgba(0,0,0,.04);
   --border: rgba(0,0,0,.08);
   --ring: color-mix(in oklab, var(--a2), transparent 78%);
@@ -44,9 +42,10 @@ body{
   margin:0; color:var(--text); background: var(--bg);
   font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "SF Pro";
   -webkit-tap-highlight-color: transparent;
+  padding-top: calc(var(--header-h) + 10px);
 }
 
-/* ===== Abstract Background (animated blobs + faint diagonal texture) ===== */
+/* ===== Abstract Background ===== */
 .bg-scene{
   position: fixed; inset: 0; z-index:-2; pointer-events:none;
   background:
@@ -54,246 +53,296 @@ body{
     radial-gradient(60% 60% at 85% 18%, color-mix(in oklab, var(--a2), transparent 78%) 0%, transparent 60%),
     conic-gradient(from 180deg at 50% 120%, color-mix(in oklab, var(--a1), transparent 92%), color-mix(in oklab, var(--a2), transparent 92%));
   filter: saturate(1.04) blur(0.2px);
-  overflow: hidden;
 }
 .bg-scene::before,
 .bg-scene::after{
-  content:""; position:absolute; inset:auto; pointer-events:none; border-radius:50%;
+  content:""; position:absolute; border-radius:50%;
   filter: blur(36px); opacity:.18; animation: float 18s ease-in-out infinite;
 }
-.bg-scene::before{
-  width: 42vmin; height: 42vmin; left: 8%; top: 12%;
-  background: radial-gradient(circle at 30% 30%, color-mix(in oklab, var(--a1), white 10%), transparent 55%);
-  animation-delay: -6s;
-}
-.bg-scene::after{
-  width: 46vmin; height: 46vmin; right: 8%; top: 14%;
-  background: radial-gradient(circle at 70% 30%, color-mix(in oklab, var(--a2), white 4%), transparent 55%);
-}
+.bg-scene::before{ width: 42vmin; height: 42vmin; left: 8%; top: 12%;
+  background: radial-gradient(circle at 30% 30%, color-mix(in oklab, var(--a1), white 10%), transparent 55%); animation-delay:-6s; }
+.bg-scene::after{ width: 46vmin; height: 46vmin; right: 8%; top: 14%;
+  background: radial-gradient(circle at 70% 30%, color-mix(in oklab, var(--a2), white 4%), transparent 55%); }
 body::after{
-  content:""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
-  opacity: .06;
-  background:
-    repeating-linear-gradient(135deg,
-      rgba(255,255,255,.12) 0px,
-      rgba(255,255,255,.12) 1px,
-      transparent 1px,
-      transparent 18px
-    );
+  content:""; position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .06;
+  background: repeating-linear-gradient(135deg, rgba(255,255,255,.12) 0px, rgba(255,255,255,.12) 1px, transparent 1px, transparent 18px);
 }
-@keyframes float {
-  0%   { transform: translateY(0) translateX(0) scale(1); }
-  50%  { transform: translateY(12px) translateX(-8px) scale(1.02); }
-  100% { transform: translateY(0) translateX(0) scale(1); }
-}
+@keyframes float { 0%{transform:translateY(0)} 50%{transform:translateY(12px)} 100%{transform:translateY(0)} }
 
 /* ===== Layout ===== */
 .container{ width:min(1120px,92%); margin-inline:auto; }
 main, .section, .hero { position: relative; z-index: 1; display:block; }
-.section{ padding:44px 0; scroll-margin-top: 88px; }
-.section__title{ font-size:26px; margin:0 0 12px; }
+.section{ padding:44px 0; scroll-margin-top: calc(var(--header-h) + 16px); }
+.section__title{ font-size: clamp(28px, 3.4vw, 34px); margin:0 0 12px; }
+:root[data-theme="light"] .section__title{ color: var(--a1); }
 
-/* ===== Smooth, full-bleed header with side fades (more transparent) ===== */
+/* ===== Header (fixed) ===== */
 .header{
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  padding: 14px 0;
-  min-height: var(--header-h);
-  border: none;
-  background: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
+  position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+  width: min(1120px, 92%); z-index: 50; padding: 14px 0; min-height: var(--header-h);
   display:flex; align-items:center; justify-content:space-between;
 }
 .header::before{
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100vw;
-  height: var(--header-h);
+  content:""; position: fixed; top:0; left:50%; transform:translateX(-50%);
+  width:100vw; height:var(--header-h);
   background: color-mix(in oklab, var(--bg), transparent 78%);
-  backdrop-filter: blur(10px) saturate(1.15);
-  -webkit-backdrop-filter: blur(10px) saturate(1.15);
+  backdrop-filter: blur(10px) saturate(1.15); -webkit-backdrop-filter: blur(10px) saturate(1.15);
   box-shadow: 0 8px 24px color-mix(in oklab, var(--a2), transparent 92%);
-  border-radius: 0 0 16px 16px;
-  pointer-events: none;
-  z-index: -1;
+  border-radius: 0 0 16px 16px; pointer-events:none; z-index:-1;
   mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
   -webkit-mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
 }
 
-/* ===== Brand ===== */
-.brand{
-  font-family: var(--brand-font);
-  font-weight: 700;
-  letter-spacing: .6px;
-  text-decoration: none;
-  color: var(--text);
-  font-size: clamp(18px, 2.2vw, 22px);
-  line-height: 1;
-}
-
-/* ===== Nav + theme toggle ===== */
-.nav{
-  display:flex; align-items:center; gap:18px;
-  flex-wrap: wrap;
-}
-.nav a{color:var(--text); text-decoration:none; opacity:.9; white-space:nowrap}
-.nav a:hover{opacity:1}
-.icon-btn{
-  display:grid; place-items:center; width:36px; height:36px; border-radius:12px;
-  border:1px solid color-mix(in oklab, var(--a2), var(--border) 70%);
-  background: var(--bg-soft);
-  cursor:pointer;
-  transition: transform .12s ease, box-shadow .2s ease, border-color .2s ease;
-  flex: 0 0 auto;
-}
-.icon-btn:hover{
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(8, 36, 84, .18), 0 1px 2px rgba(0,0,0,.06);
-  border-color: color-mix(in oklab, var(--a2), var(--border) 45%);
-}
-.theme-icon{display:none}
-:root[data-theme="dark"] .show-in-dark{display:inline-flex}
-:root[data-theme="light"] .show-in-light{display:inline-flex}
+/* ===== Brand & Nav ===== */
+.brand{ font-family: var(--brand-font); font-weight:700; letter-spacing:.6px; text-decoration:none; color:var(--text); font-size: clamp(18px, 2.2vw, 22px); line-height:1; }
+:root[data-theme="light"] .brand{ color: var(--a1) }
+.nav{ display:flex; align-items:center; gap:18px; flex-wrap: wrap; }
+.nav a{ color:var(--text); text-decoration:none; opacity:.9; white-space:nowrap; padding:6px 10px; border-radius:10px; transition: background .2s ease, opacity .15s ease; }
+.nav a:hover{ opacity:1; background: color-mix(in oklab, var(--a2), transparent 88%); }
+/* Keep hover-like background when link is active by scroll */
+.nav a.active{ opacity:1; background: color-mix(in oklab, var(--a2), transparent 82%); }
+/* When at the hero, suppress nav hover/active background to keep it clean */
+:root.at-hero .nav a:hover{ background: transparent; opacity:.9 }
+:root.at-hero .nav a.active{ background: transparent; opacity:.9 }
+/* Ensure About link doesn't show hover while at hero */
+:root.at-hero .nav a[href="#about"]:hover{ background: transparent !important; opacity:.9 }
+.icon-btn{ display:grid; place-items:center; width:36px; height:36px; border-radius:12px; border:1px solid color-mix(in oklab, var(--a2), var(--border) 70%); background: var(--bg-soft); cursor:pointer; transition: transform .12s ease, box-shadow .2s ease, border-color .2s ease; }
+.icon-btn:hover{ transform: translateY(-1px); box-shadow: 0 6px 16px rgba(8,36,84,.18), 0 1px 2px rgba(0,0,0,.06); border-color: color-mix(in oklab, var(--a2), var(--border) 45%) }
+.theme-icon{ display:none } :root[data-theme="dark"] .show-in-dark{display:inline-flex} :root[data-theme="light"] .show-in-light{display:inline-flex}
 .icon-btn svg{ width:18px; height:18px; color:var(--text); opacity:.95 }
 
-/* ===== Hero (with circular photo) ===== */
-.hero{
-  display:grid; grid-template-columns: 1.2fr .8fr; gap:24px; padding:64px 0 20px;
-  align-items: center;
-}
+/* ===== Hero ===== */
+.hero{ display:grid; grid-template-columns: 1.2fr .8fr; gap:24px; padding:64px 0 20px; align-items: center; min-height: calc(100vh - var(--header-h) - 8px); }
 @media (max-width:900px){ .hero{ grid-template-columns:1fr } }
-
 .eyebrow{ margin:0; color:var(--muted) }
-.gradient-title{
-  margin:6px 0 10px; line-height:1.12;
-  font-size: clamp(32px, 6vw, 56px);
-  background: linear-gradient(90deg, var(--a1), var(--a2));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-}
-.role{ margin:0 0 4px; font-weight:700 }
-.blurb{ margin:0 0 16px; color:var(--muted) }
-.hero__tags{ display:flex; flex-wrap:wrap; gap:8px; align-content:start }
+.gradient-title{ margin:6px 0 10px; line-height:1.12; font-size: clamp(36px, 7vw, 64px); background: linear-gradient(90deg, var(--a1), var(--a2)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+:root[data-theme="light"] .gradient-title{ background:none; color:var(--a1) }
+.role{ margin:0 0 4px; font-weight:700; font-size: clamp(16px, 2.2vw, 22px) }
+.blurb{ margin:0 0 16px; color:var(--muted); font-size: clamp(15px, 1.9vw, 18px) }
+.hero__photo-wrap{ display:grid; place-items:center }
+.hero__photo{ width:min(320px, 90%); aspect-ratio:1 / 1; object-fit:cover; border-radius:50%; border:1px solid color-mix(in oklab, var(--a2), var(--border) 60%); box-shadow: 0 14px 40px rgba(8,36,84,.25), 0 2px 6px rgba(0,0,0,.08) }
 
-/* circular portrait */
-.hero__photo-wrap{ display: grid; place-items: center; }
-.hero__photo{
-  width: min(320px, 90%);
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
+/* ===== Buttons & Chips ===== */
+.btn{ --g: linear-gradient(90deg, var(--a1), var(--a2)); display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:10px 14px; min-height:40px; border-radius:14px; border:0; background:var(--g); color:#fff; text-decoration:none; box-shadow: 0 6px 16px rgba(8,36,84,.18), 0 1px 2px rgba(0,0,0,.06); transition: transform .12s ease, box-shadow .2s ease }
+.btn:hover{ transform:translateY(-1px); box-shadow: 0 10px 22px rgba(8,36,84,.22), 0 2px 4px rgba(0,0,0,.06) }
+.btn.outline{ background:transparent; color:var(--text); box-shadow: inset 0 0 0 1px rgba(33,150,243,.28), 0 1px 2px rgba(0,0,0,.04) }
+.btn.outline:hover{ box-shadow: inset 0 0 0 1px rgba(33,150,243,.40), 0 4px 12px rgba(8,36,84,.14) }
+.chip{ padding:6px 10px; border-radius:999px; border:1px solid color-mix(in oklab, var(--a2), var(--border) 70%); background: color-mix(in oklab, var(--bg), var(--card) 70%); font-size:14px }
+.chip-ghost{ background: color-mix(in oklab, var(--a2), transparent 92%) }
 
-  /* Circle change */
-  border-radius: 50%;
+/* CTA rows (Hero, Contact) */
+.cta{ display:flex; gap:12px; flex-wrap: wrap; align-items:center }
+.cta .btn{ flex: 0 0 auto }
+#contact .cta{ justify-content: center }
 
-  border: 1px solid color-mix(in oklab, var(--a2), var(--border) 60%);
-  box-shadow:
-    0 14px 40px rgba(8, 36, 84, .25),
-    0 2px 6px rgba(0,0,0,.08);
-  background: color-mix(in oklab, var(--bg-soft), white 0%);
-}
+/* Visually-hidden utility */
+.sr-only{ position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0 }
 
-/* ===== Buttons (blue gradient, natural shadow, no border line) ===== */
-.btn{
-  --g: linear-gradient(90deg, var(--a1), var(--a2));
-  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 10px 14px; min-height: 40px; border-radius: 14px;
-  border: 0; outline: 0;
-  background: var(--g); background-clip: padding-box;
-  color: white; text-decoration: none; white-space: nowrap; line-height: 1;
-  box-shadow: 0 6px 16px rgba(8, 36, 84, .18), 0 1px 2px rgba(0, 0, 0, .06);
-  transition: transform .12s ease, box-shadow .2s ease;
-  position: relative;
-}
-.btn:hover{
-  transform: translateY(-1px);
-  box-shadow: 0 10px 22px rgba(8, 36, 84, .22), 0 2px 4px rgba(0, 0, 0, .06);
-}
-.btn.outline{
-  background: transparent; color: var(--text); border: 0;
-  box-shadow: inset 0 0 0 1px rgba(33, 150, 243, .28), 0 1px 2px rgba(0,0,0,.04);
-}
-.btn.outline:hover{
-  box-shadow: inset 0 0 0 1px rgba(33, 150, 243, .40), 0 4px 12px rgba(8, 36, 84, .14);
-}
-
-/* Avoid button overlap in CTAs */
-.cta{ display:flex; gap:12px; flex-wrap: wrap; align-items:center; }
-.cta .btn{ flex: 0 0 auto; }
-
-/* ===== Pills ===== */
-.chip{
-  padding:6px 10px; border-radius:999px;
-  border:1px solid color-mix(in oklab, var(--a2), var(--border) 70%);
-  background: color-mix(in oklab, var(--bg), var(--card) 70%);
-  font-size:14px;
-}
-.chip-ghost{ background: color-mix(in oklab, var(--a2), transparent 92%); }
-
-/* ===== About ===== */
-.inline-list{ list-style:none; padding:0; display:flex; gap:18px; flex-wrap:wrap }
-.inline-list a{ color: var(--a2); text-decoration:none }
-
-/* ===== Grid / Cards / Projects ===== */
-.grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:16px }
-@media (max-width:900px){ .grid{ grid-template-columns:1fr } }
-.card{
-  background: var(--bg-soft); border:1px solid var(--border); border-radius:16px; padding:16px;
-  transition: transform .2s ease, box-shadow .25s ease, border-color .2s ease;
-  box-shadow: none;
-}
-.card:hover{
-  transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(8, 36, 84, .16);
-  border-color: color-mix(in oklab, var(--a2), var(--border) 45%);
-}
-.project{ position:relative; overflow:hidden; }
-.project .arrow{ position:absolute; right:12px; bottom:10px; opacity:.7 }
-.tilt:hover{ transform: perspective(900px) rotateX(2deg) rotateY(-2deg) }
-
-/* ===== Glass accent (used in Skills) ===== */
-.glass{
-  background: linear-gradient(180deg, color-mix(in oklab, var(--a2), transparent 94%), color-mix(in oklab, var(--bg-soft), white 0%));
-  border:1px solid color-mix(in oklab, var(--a2), var(--border) 78%);
-  backdrop-filter: blur(6px);
-}
-
-/* ===== Timeline (Experience) ===== */
-.timeline{ position:relative; margin:24px 0 0; padding-left:14px }
-.timeline:before{ content:""; position:absolute; left:6px; top:0; bottom:0; width:2px; background: var(--border) }
-.timeline__item{ position:relative; margin:0 0 18px 0 }
-.timeline__dot{
-  position:absolute; left:-1px; top:6px; width:14px; height:14px; border-radius:50%;
-  background: linear-gradient(135deg, var(--a1), var(--a2));
-  box-shadow: 0 0 0 4px color-mix(in oklab, var(--a2), transparent 80%);
-}
-.timeline__card{ margin-left:20px }
+/* ===== Timeline (Experience & Achievements) ===== */
+.timeline{ position:relative; margin:24px auto 0; padding-left:24px; max-width: 760px }
+.timeline:before{ content:""; position:absolute; left:10px; top:0; bottom:0; width:2px; background: var(--border) }
+.timeline__item{ position:relative; margin:0 0 22px 0 }
+.timeline__dot{ position:absolute; left:3px; top:6px; width:14px; height:14px; border-radius:50%; background: linear-gradient(135deg, var(--a1), var(--a2)); box-shadow: 0 0 0 4px color-mix(in oklab, var(--a2), transparent 80%) }
+.timeline__card{ margin-left:24px }
 .card__list{ margin:8px 0 0 18px }
 
-/* ===== Skills ===== */
-.skills-grid{ display:grid; gap:12px; grid-template-columns: repeat(4, 1fr); }
-@media (max-width:900px){ .skills-grid{ grid-template-columns: repeat(2, 1fr) } }
-.skill{ display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; }
-.skill__dot{
-  width:10px; height:10px; border-radius:50%;
-  background: radial-gradient(circle at 30% 30%, var(--a1), var(--a2));
-  box-shadow: 0 0 0 4px color-mix(in oklab, var(--a2), transparent 85%);
+/* Timeline typography (smaller) */
+.timeline .timeline__card{ font-size: 14px; line-height: 1.55; }
+.timeline .timeline__header h3{ font-size: 16px; margin: 0 0 2px; }
+.timeline .muted{ font-size: 13px; }
+.timeline .card__list{ font-size: 14px; }
+@media (max-width: 600px){
+  .timeline .timeline__card{ font-size: 13.5px }
+  .timeline .timeline__header h3{ font-size: 15px }
+  .timeline .muted{ font-size: 12.5px }
 }
-.skill__name{ font-weight:600 }
 
-/* ===== Footer ===== */
-.footer{ padding:32px 0 60px; border-top:1px solid var(--border) }
+/* ===== Experience (card layout) ===== */
+.xp-list{ display:grid; gap:14px; max-width: 760px; margin: 18px auto 0; }
+.xp-card{ text-align:left; background: var(--bg-soft); border:1px solid var(--border); border-radius:14px; padding:14px 16px; box-shadow: 0 6px 16px rgba(8,36,84,.14) }
+.xp-card{ position: relative; overflow: hidden; transition: transform .2s ease, box-shadow .25s ease, border-color .2s ease }
+.xp-card:hover{ transform: translateY(-2px); box-shadow: 0 8px 18px rgba(8,36,84,.16); border-color: color-mix(in oklab, var(--a2), var(--border) 45%) }
+.xp-crest{ position:absolute; top:10px; right:12px; line-height:1; opacity:.95; display:inline-grid; place-items:center }
+.xp-crest svg{ width:16px; height:16px; color: var(--text) }
+:root[data-theme="light"] .xp-crest svg{ color: var(--a1) }
+/* Crest floats continuously like Skills crests for visual consistency */
+.xp-crest svg{ animation: float-icon 3s ease-in-out infinite }
+.xp-header{ display:flex; flex-direction:column; align-items:flex-start; gap:4px; margin-bottom:6px }
+.xp-role{ font-size: 18px; margin:0; background: linear-gradient(90deg, var(--a1), var(--a2)); -webkit-background-clip:text; background-clip:text; color:transparent }
+:root[data-theme="light"] .xp-role{ background:none; color: var(--a1) }
+.xp-meta{ color: var(--muted); font-size: 14px }
+.xp-points{ margin:8px 0 0 18px; font-size: 15px; line-height:1.6 }
+.xp-points li{ transition: transform .12s ease }
+.xp-points li:hover{ transform: translateX(-2px) }
+.xp-header .icon{ display:inline-grid; place-items:center; width:18px; height:18px; margin-right:6px; color: var(--text); opacity:.9 }
+.xp-header .sep{ padding: 0 6px; color: var(--muted) }
+
+/* ===== Center sections from About onward ===== */
+#about, #skills, #experience, #projects, #contact{ text-align:center }
+#projects .grid{ justify-items:center }
+#projects .project{ width:100%; max-width:360px }
+#projects .project{ position:relative; padding-top:16px }
+#projects .project-crest{ position:absolute; top:10px; right:12px; display:inline-grid; place-items:center; opacity:.95 }
+#projects .project-crest svg{ width:18px; height:18px; color: var(--text); animation: float-icon 3s ease-in-out infinite }
+:root[data-theme="light"] #projects .project-crest svg{ color: var(--a1) }
+
+/* ===== About (trimmed; unchanged from previous) ===== */
+.about__lead{ margin:8px auto 18px; font-size:17px; color:var(--text); opacity:.95; max-width:72ch }
+.about__meta{ display:grid; gap:10px; grid-template-columns: repeat(3, minmax(0,1fr)) }
+@media (max-width:900px){ .about__meta{ grid-template-columns:1fr } }
+.about__meta-item{ background:var(--bg-soft); border:1px solid var(--border); border-radius:12px; padding:12px 14px; transition: transform .15s, box-shadow .2s, border-color .2s }
+.about__meta-item:hover{ transform:translateY(-2px); box-shadow:0 12px 26px rgba(8,36,84,.20); border-color: color-mix(in oklab, var(--a2), var(--border) 52%) }
+.about__meta-key{ display:block; font-size:12px; letter-spacing:.2px; color:var(--muted); margin-bottom:4px; text-transform:uppercase }
+.about__meta-val{ font-weight:600 }
+/* Make location (and other meta values) non-bold */
+.about__meta-val{ font-weight:400 }
+.about__link{ color:var(--a2); text-decoration:none }
+.about__link:hover{ text-decoration:underline }
+/* In light mode, make email/GitHub links appear as black text for About section */
+:root[data-theme="light"] .about__link{ color: #000 }
+/* In dark mode, make email/GitHub links appear white */
+:root[data-theme="dark"] .about__link{ color: #fff }
+
+.about__follow-title{ margin:26px 0 12px; font-size:14px; letter-spacing:.2px; text-transform:uppercase; color:var(--muted) }
+.about__socials{ list-style:none; padding:0; margin:0; display:flex; justify-content:center; align-items:center; gap:14px; flex-wrap:wrap }
+.social-card{ display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:14px; text-decoration:none; color:#fff; background: linear-gradient(180deg, color-mix(in oklab, var(--a2), transparent 88%), color-mix(in oklab, var(--bg-soft), white 0%)); border:1px solid color-mix(in oklab, var(--a2), var(--border) 62%); box-shadow:0 8px 18px rgba(8,36,84,.16), inset 0 0 0 1px color-mix(in oklab, var(--a2), transparent 95%); transition: transform .15s, box-shadow .2s, border-color .2s }
+.social-card:hover{ transform:translateY(-2px); box-shadow:0 12px 26px rgba(8,36,84,.20); border-color: color-mix(in oklab, var(--a2), var(--border) 48%) }
+.social-card__icon, .social-card__icon svg{ color:#fff; fill:#fff; stroke:#fff }
+.social-card__icon{ display:grid; place-items:center; width:32px; height:32px; border-radius:10px; background: linear-gradient(135deg, var(--a1), var(--a2)); box-shadow:0 6px 14px rgba(8,36,84,.25) }
+.social-linkedin .social-card__icon{ background: linear-gradient(135deg, #0A66C2, #1f7fe0) }
+.social-x .social-card__icon{ background: linear-gradient(135deg, #111, #000) }
+.social-instagram .social-card__icon{ background: linear-gradient(135deg, #F58529, #DD2A7B 45%, #8134AF 70%, #515BD4) }
+
+/* ===== Skills (CATEGORIES with masonry-like tiles) ===== */
+#skills .section__title{ margin-bottom:6px }
+.skills__filters{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin:8px 0 16px }
+.skills__tabs{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:10px 0 18px }
+.chip-filter{ cursor:pointer; user-select:none; transition: transform .12s ease, box-shadow .2s ease, border-color .2s ease }
+.chip-filter:hover{ transform: translateY(-1px) }
+.chip-filter.is-active{ background: linear-gradient(90deg, var(--a1), var(--a2)); color:#fff; border-color: transparent; box-shadow: 0 8px 20px rgba(8,36,84,.18) }
+/* Blue monochrome emojis in filters */
+.skills__filters .emoji{ filter: grayscale(1) sepia(1) hue-rotate(205deg) saturate(300%) brightness(1.0); opacity:.95 }
+/* Make filter chips visually match skill tiles */
+.skills__filters .chip{ border-radius:12px; border:1px solid color-mix(in oklab, var(--a2), var(--border) 88%); background: color-mix(in oklab, var(--bg), var(--card) 70%); padding:8px 10px }
+.skills__filters .chip:hover{ border-color: color-mix(in oklab, var(--a2), var(--border) 55%); box-shadow: 0 6px 14px rgba(8,36,84,.16) }
+
+.skills__categories{ column-count: 2; column-gap: 16px; }
+@media (max-width:900px){ .skills__categories{ column-count: 1 } }
+
+.category{ text-align:left; overflow:hidden; break-inside: avoid; -webkit-column-break-inside: avoid; margin-bottom: 16px; width:100% }
+.category.show{ animation: fade .25s ease both }
+.category.hide{ display:none }
+
+.category__header{ display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; position: relative }
+.category__title{
+  font-size:18px; margin:0; color:var(--text);
+  background: linear-gradient(90deg, var(--a1), var(--a2));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+:root[data-theme="light"] .category__title{ background:none; color:var(--a1) }
+
+/* Creative crest badge */
+.category__crest{
+  position: relative; display:inline-grid; place-items:center;
+  width:auto; height:auto; border-radius:0;
+  background: transparent; box-shadow: none; overflow: visible;
+}
+.category__crest .crest__icon svg{ width:18px; height:18px; color: var(--text); opacity:.95; animation: float-icon 3s ease-in-out infinite }
+:root[data-theme="light"] .category__crest .crest__icon svg{ color: var(--a1) }
+@keyframes float-icon{ 0%{ transform: translateY(0) } 50%{ transform: translateY(-2px) } 100%{ transform: translateY(0) } }
+.category__crest .crest__glow{ display:none }
+@keyframes crest-sheen{
+  0%,100%{ transform: translateX(-20%) translateY(-10%) rotate(0) }
+  50%{ transform: translateX(20%) translateY(10%) rotate(5deg) }
+}
+
+/* Masonry-like grid: 6 columns desktop for varied spans */
+.category__grid{
+  display:grid; gap:10px;
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: 46px; /* base row height for vertical rhythm */
+}
+@media (max-width:900px){
+  .category__grid{ grid-template-columns: repeat(4, 1fr) }
+}
+@media (max-width:600px){
+  .category__grid{ grid-template-columns: repeat(2, 1fr) }
+}
+
+/* Skill tiles with size variants */
+.skill-tile{
+  display:flex; align-items:center; gap:10px; padding:10px 12px;
+  border-radius:12px; border:1px solid color-mix(in oklab, var(--a2), var(--border) 88%);
+  background: color-mix(in oklab, var(--bg), var(--card) 70%);
+  transition: transform .12s ease, box-shadow .2s ease, border-color .2s ease;
+  min-height: 46px; /* match grid-auto-rows to keep tiles on a single row */
+  overflow: hidden;
+  position: relative;
+  z-index: 0;
+}
+.skill-tile:hover{
+  transform: translateY(-1px);
+  border-color: color-mix(in oklab, var(--a2), var(--border) 55%);
+  box-shadow: 0 6px 14px rgba(8,36,84,.16);
+  z-index: 1; /* ensure hover elevation is visible within masonry */
+}
+
+/* Column spans create visual rhythm */
+.tile-sm{ grid-column: span 1 }
+.tile-md{ grid-column: span 2 }
+.tile-lg{ grid-column: span 3 }
+.tile-xl{ grid-column: span 4 }
+
+.skill__dot{
+  width:7px; height:7px; border-radius:50%;
+  background: radial-gradient(circle at 30% 30%, var(--a1), var(--a2));
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--a2), transparent 85%);
+}
+.skill__name{ font-weight:500; font-size:14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+
+/* Avoid hover background on button-style nav link to prevent visual overlap */
+.nav a.btn:hover,
+.nav a.btn.active{ background: var(--g); color:#fff; opacity:1 }
+/* Also suppress the Contact button hover/active when at hero */
+:root.at-hero .nav a.btn:hover,
+:root.at-hero .nav a.btn.active{ background: transparent; color: var(--text); opacity:.9; box-shadow:none }
+
+/* ---- Skills/Achievements tabs as buttons ---- */
+.skills__tabs{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:10px 0 18px }
+.btn.btn--sm{ padding:8px 12px; min-height:36px; border-radius:12px; font-size:16px }
+.btn.ghost{ background: color-mix(in oklab, var(--bg), var(--card) 70%); color: var(--text); box-shadow: 0 1px 2px rgba(0,0,0,.04) }
+.skills__tabs .icon svg{ width:16px; height:16px; animation: float-icon 3s ease-in-out infinite }
+.btn:not(.ghost) .icon svg{ color:#fff }
+.btn.ghost .icon svg{ color: var(--text) }
+:root[data-theme="light"] .btn.ghost .icon svg{ color: var(--a1) }
+
+/* ---- Zigzag (alternating) timeline centered ---- */
+.timeline.zigzag{ position:relative; max-width: 900px; margin: 24px auto 0; padding: 0 16px }
+.timeline.zigzag:before{ content:""; position:absolute; left:50%; top:0; bottom:0; width:2px; transform: translateX(-50%); background: var(--border) }
+.timeline.zigzag .timeline__item{ position:relative; width:50%; padding:10px 16px; }
+.timeline.zigzag .timeline__item.left{ left:0; text-align:right }
+.timeline.zigzag .timeline__item.right{ left:50%; text-align:left }
+.timeline.zigzag .timeline__item .timeline__dot{ position:absolute; top:10px; left: calc(100% - 7px); width:14px; height:14px; border-radius:50%; background: linear-gradient(135deg, var(--a1), var(--a2)); box-shadow: 0 0 0 4px color-mix(in oklab, var(--a2), transparent 80%) }
+.timeline.zigzag .timeline__item.right .timeline__dot{ left: -7px }
+.timeline.zigzag .timeline__item .timeline__card{ display:inline-block; max-width: 100%; background: var(--bg-soft); border:1px solid var(--border); border-radius:12px; padding:12px; box-shadow: 0 6px 16px rgba(8,36,84,.16); font-size: 15px; }
+.timeline.zigzag .timeline__item .timeline__header h3{ font-size: 17px; margin: 0 0 2px; }
+:root[data-theme="light"] .timeline.zigzag .timeline__item .timeline__header h3{ color: var(--a1) }
+@media (max-width:900px){
+  .timeline.zigzag:before{ left: 18px; transform:none }
+  .timeline.zigzag .timeline__item{ width:100%; left:0; text-align:left; padding-left:36px }
+  .timeline.zigzag .timeline__item .timeline__dot{ left:10px }
+}
+
+/* ===== Cards / Projects / Footer (trimmed) ===== */
+.grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:16px }
+@media (max-width:900px){ .grid{ grid-template-columns:1fr } }
+.card{ background: var(--bg-soft); border:1px solid var(--border); border-radius:16px; padding:16px; transition: transform .2s, box-shadow .25s, border-color .2s }
+.card:hover{ transform: translateY(-2px); box-shadow: 0 8px 18px rgba(8,36,84,.16); border-color: color-mix(in oklab, var(--a2), var(--border) 45%) }
+
+.footer{ padding:32px 0 60px; border-top:1px solid var(--border); text-align:center }
 .muted{ color:var(--muted) }
 
-/* ===== Animations ===== */
 .fade-in{ animation: fade .7s ease both }
 .rise{ animation: rise .6s ease both }
 @keyframes fade{ from{opacity:0} to{opacity:1} }
 @keyframes rise{ from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:none} }
-
-/* ===== Safety ===== */
-.bg-scene { pointer-events: none; z-index: -2; }
-.section, .hero { position: relative !important; top:auto !important; left:auto !important; }
