@@ -5,6 +5,9 @@ export default function Experience() {
   return (
     <section id="experience" className="container section">
       <h2 className="section__title">Experience</h2>
+      {profile.sectionSubtitles?.experience && (
+        <p className="muted">{profile.sectionSubtitles.experience}</p>
+      )}
       <div className="xp-list">
         {profile.experience.map((e, i) => (
               <article className="xp-card category card glass show rise" key={i}>

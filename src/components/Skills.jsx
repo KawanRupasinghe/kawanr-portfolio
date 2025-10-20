@@ -48,7 +48,9 @@ export default function Skills() {
   return (
     <section id="skills" className="container section">
       <h2 className="section__title">Skills</h2>
-      <p className="muted">What I build with — and milestones that matter.</p>
+      {profile.sectionSubtitles?.skills && (
+        <p className="muted">{profile.sectionSubtitles.skills}</p>
+      )}
 
       {/* Tabs */}
       <div className="skills__tabs">
