@@ -12,6 +12,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
   </head>
   <body>
+    <!-- Hidden Netlify form template so Netlify can detect it at build time -->
+    <!-- Keep this exactly once, anywhere in the HTML, and hidden is fine -->
+    <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <textarea name="message"></textarea>
+    </form>
+
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
