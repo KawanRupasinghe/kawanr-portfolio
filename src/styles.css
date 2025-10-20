@@ -106,13 +106,15 @@ main, .section, .hero { position: relative; z-index: 1; display:block; }
 :root.at-hero .nav a.active{ background: transparent; opacity:.9 }
 /* Ensure About link doesn't show hover while at hero */
 :root.at-hero .nav a[href="#about"]:hover{ background: transparent !important; opacity:.9 }
+/* Also neutralize the theme toggle hover while at hero */
+:root.at-hero .icon-btn:hover{ transform:none; box-shadow:none; border-color: color-mix(in oklab, var(--a2), var(--border) 70%) }
 .icon-btn{ display:grid; place-items:center; width:36px; height:36px; border-radius:12px; border:1px solid color-mix(in oklab, var(--a2), var(--border) 70%); background: var(--bg-soft); cursor:pointer; transition: transform .12s ease, box-shadow .2s ease, border-color .2s ease; }
 .icon-btn:hover{ transform: translateY(-1px); box-shadow: 0 6px 16px rgba(8,36,84,.18), 0 1px 2px rgba(0,0,0,.06); border-color: color-mix(in oklab, var(--a2), var(--border) 45%) }
 .theme-icon{ display:none } :root[data-theme="dark"] .show-in-dark{display:inline-flex} :root[data-theme="light"] .show-in-light{display:inline-flex}
 .icon-btn svg{ width:18px; height:18px; color:var(--text); opacity:.95 }
 
 /* ===== Hero ===== */
-.hero{ display:grid; grid-template-columns: 1.2fr .8fr; gap:24px; padding:64px 0 20px; align-items: center; min-height: calc(100vh - var(--header-h) - 8px); }
+.hero{ display:grid; grid-template-columns: 1.2fr .8fr; gap:24px; padding:0px 0 16px; align-items: center; min-height: calc(100vh - var(--header-h) - 8px); }
 @media (max-width:900px){ .hero{ grid-template-columns:1fr } }
 .eyebrow{ margin:0; color:var(--muted) }
 .gradient-title{ margin:6px 0 10px; line-height:1.12; font-size: clamp(36px, 7vw, 64px); background: linear-gradient(90deg, var(--a1), var(--a2)); -webkit-background-clip:text; background-clip:text; color:transparent; }
@@ -123,7 +125,7 @@ main, .section, .hero { position: relative; z-index: 1; display:block; }
 .hero__photo{ width:min(320px, 90%); aspect-ratio:1 / 1; object-fit:cover; border-radius:50%; border:1px solid color-mix(in oklab, var(--a2), var(--border) 60%); box-shadow: 0 14px 40px rgba(8,36,84,.25), 0 2px 6px rgba(0,0,0,.08) }
 
 /* ===== Buttons & Chips ===== */
-.btn{ --g: linear-gradient(90deg, var(--a1), var(--a2)); display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:10px 14px; min-height:40px; border-radius:14px; border:0; background:var(--g); color:#fff; text-decoration:none; box-shadow: 0 6px 16px rgba(8,36,84,.18), 0 1px 2px rgba(0,0,0,.06); transition: transform .12s ease, box-shadow .2s ease }
+.btn{ --g: linear-gradient(90deg, var(--a1), var(--a2)); display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:10px 14px; min-height:40px; border-radius:14px; border:0; background:var(--g); color:#fff; text-decoration:none; box-shadow: 0 6px 16px rgba(8,36,84,.18), 0 1px 2px rgba(0,0,0,.06); transition: transform .12s ease, box-shadow .2s ease; cursor: pointer }
 .btn:hover{ transform:translateY(-1px); box-shadow: 0 10px 22px rgba(8,36,84,.22), 0 2px 4px rgba(0,0,0,.06) }
 .btn.outline{ background:transparent; color:var(--text); box-shadow: inset 0 0 0 1px rgba(33,150,243,.28), 0 1px 2px rgba(0,0,0,.04) }
 .btn.outline:hover{ box-shadow: inset 0 0 0 1px rgba(33,150,243,.40), 0 4px 12px rgba(8,36,84,.14) }
@@ -179,16 +181,62 @@ main, .section, .hero { position: relative; z-index: 1; display:block; }
 
 /* ===== Center sections from About onward ===== */
 #about, #skills, #experience, #projects, #contact{ text-align:center }
+/* Override centering inside Contact: left-align content within cards and form */
+#contact .contact__grid, #contact .contact__card, #contact .contact__form{ text-align:left }
 #projects .grid{ justify-items:center }
 #projects .project{ width:100%; max-width:360px }
 #projects .project{ position:relative; padding-top:16px }
 #projects .project-crest{ position:absolute; top:10px; right:12px; display:inline-grid; place-items:center; opacity:.95 }
 #projects .project-crest svg{ width:18px; height:18px; color: var(--text); animation: float-icon 3s ease-in-out infinite }
 :root[data-theme="light"] #projects .project-crest svg{ color: var(--a1) }
+/* Project tags and one-line truncation */
+.tags{ display:flex; flex-wrap:wrap; gap:6px; margin: 0 0 8px }
+.tag{ font-size: 12px; padding:4px 8px; border-radius:999px; border:1px solid color-mix(in oklab, var(--a2), var(--border) 70%); background: color-mix(in oklab, var(--bg), var(--card) 70%) }
+.one-line{ white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+.project__footer{ display:flex; gap:8px; justify-content:flex-end; margin-top:10px }
+/* Project cards: ensure footer is at bottom-right and buttons are smaller */
+.project-card{ display:flex; flex-direction:column; height:100% }
+.project-card .project__footer{ margin-top:auto; padding-top:8px; justify-content:flex-end }
+.btn.btn--xs{ padding:6px 10px; min-height:30px; border-radius:10px; font-size:14px }
+
+/* Dark-mode clarity: make 'More' (ghost) muted and 'View' (outline) crisper inside project cards */
+.project-card .btn.ghost{ color: var(--muted); background: color-mix(in oklab, var(--bg), var(--card) 55%); border: 1px solid color-mix(in oklab, var(--a2), var(--border) 65%) }
+.project-card .btn.ghost:hover{ border-color: color-mix(in oklab, var(--a2), var(--border) 48%); box-shadow: 0 4px 10px rgba(8,36,84,.12) }
+.project-card .btn.outline{ background: transparent; border: 1px solid color-mix(in oklab, var(--a2), var(--border) 40%); box-shadow: none }
+.project-card .btn.outline:hover{ border-color: color-mix(in oklab, var(--a2), var(--border) 28%); box-shadow: 0 4px 10px rgba(8,36,84,.12) }
+:root[data-theme="light"] .project-card .btn.ghost{ color: var(--a1) }
+
+/* Modal */
+.modal-backdrop{ position:fixed; inset:0; background: rgba(0,0,0,.45); backdrop-filter: blur(2px); display:grid; place-items:center; z-index:100 }
+.modal{ width:min(720px, 92%); max-height: 80vh; overflow:auto; position: relative }
+.modal__header{ display:flex; align-items:center; justify-content:space-between; gap:10px; position: sticky; top:0; background: var(--bg-soft); padding-bottom: 8px; z-index: 2 }
+.modal__header .icon-btn{ background: var(--bg-soft); border-color: color-mix(in oklab, var(--a2), var(--border) 55%) }
+:root[data-theme="light"] .modal__header .icon-btn svg{ color: #0a1222 }
+.modal__content--split{ display:grid; grid-template-columns: 1.1fr 1.9fr; gap:24px; align-items:start }
+.modal__content--figma{ grid-template-columns: 0.9fr 2.1fr }
+.modal__media{ border-radius:12px; overflow:hidden; border:1px solid var(--border); background: var(--bg-soft) }
+.modal__media img{ display:block; width:100%; height:auto; object-fit:cover }
+.modal__media--sm img{ max-height: 280px; object-fit: contain }
+.modal__body{ text-align:left; padding-right: 6px; padding-left: 6px }
+/* Ensure tags align left in modal body */
+.modal .tags{ justify-content: flex-start }
+@media (max-width: 700px){
+  .modal__content--split{ grid-template-columns: 1fr }
+}
+.modal .card__list{ padding-left: 6px }
+/* Actions anchored bottom-right within right column */
+.modal__body{ position: relative; padding-bottom: 44px }
+.modal__actions{ position: absolute; right: 0; bottom: 0; display:flex; gap:8px }
 
 /* ===== About (trimmed; unchanged from previous) ===== */
-.about__lead{ margin:8px auto 18px; font-size:17px; color:var(--text); opacity:.95; max-width:72ch }
-.about__meta{ display:grid; gap:10px; grid-template-columns: repeat(3, minmax(0,1fr)) }
+.about__lead{ margin:8px auto 18px; font-size:16px; color:var(--text); opacity:.95; max-width:72ch }
+.about__leads{ display:grid; grid-template-columns: 1fr; gap: 30px; text-align: left; align-items:start; justify-items: center; margin: 20px 0 50px }
+.about__lead_2{ font-size:17px; color:var(--text); opacity:.95; max-width: 64ch; margin: 0 auto; line-height: 1.7; letter-spacing: 0.01em; text-align: center }
+@media (max-width: 900px){
+  .about__leads{ grid-template-columns: 1fr }
+  .about__lead_2{ max-width: 72ch }
+}
+.about__meta{ display:grid; gap:10px; grid-template-columns: repeat(4, minmax(0,1fr)) }
 @media (max-width:900px){ .about__meta{ grid-template-columns:1fr } }
 .about__meta-item{ background:var(--bg-soft); border:1px solid var(--border); border-radius:12px; padding:12px 14px; transition: transform .15s, box-shadow .2s, border-color .2s }
 .about__meta-item:hover{ transform:translateY(-2px); box-shadow:0 12px 26px rgba(8,36,84,.20); border-color: color-mix(in oklab, var(--a2), var(--border) 52%) }
@@ -196,12 +244,21 @@ main, .section, .hero { position: relative; z-index: 1; display:block; }
 .about__meta-val{ font-weight:600 }
 /* Make location (and other meta values) non-bold */
 .about__meta-val{ font-weight:400 }
+.about__meta-head{ display:flex; align-items:center; gap:8px; margin-bottom:4px }
+.about__icon{ display:inline-grid; place-items:center; width:28px; height:28px; border-radius:999px; background: color-mix(in oklab, var(--a2), transparent 92%); border:1px solid color-mix(in oklab, var(--a2), var(--border) 60%) }
+
+/* About meta: left align content and reduce width for consistency */
+.about .about__meta, .about .about__meta-item{ text-align: left }
+.about .about__meta{ grid-template-columns: repeat(4, minmax(0,1fr)) }
 .about__link{ color:var(--a2); text-decoration:none }
 .about__link:hover{ text-decoration:underline }
 /* In light mode, make email/GitHub links appear as black text for About section */
 :root[data-theme="light"] .about__link{ color: #000 }
 /* In dark mode, make email/GitHub links appear white */
 :root[data-theme="dark"] .about__link{ color: #fff }
+
+/* Keep About meta links clickable but remove underline on hover for a cleaner, chip-like look */
+.about .about__link:hover{ text-decoration: none }
 
 .about__follow-title{ margin:26px 0 12px; font-size:14px; letter-spacing:.2px; text-transform:uppercase; color:var(--muted) }
 .about__socials{ list-style:none; padding:0; margin:0; display:flex; justify-content:center; align-items:center; gap:14px; flex-wrap:wrap }
@@ -212,6 +269,62 @@ main, .section, .hero { position: relative; z-index: 1; display:block; }
 .social-linkedin .social-card__icon{ background: linear-gradient(135deg, #0A66C2, #1f7fe0) }
 .social-x .social-card__icon{ background: linear-gradient(135deg, #111, #000) }
 .social-instagram .social-card__icon{ background: linear-gradient(135deg, #F58529, #DD2A7B 45%, #8134AF 70%, #515BD4) }
+
+/* ===== Contact (two-column with form) ===== */
+.contact__grid{ display:grid; grid-template-columns: 1fr 1.2fr; gap:16px; margin-top: 16px; align-items: stretch }
+@media (max-width:900px){ .contact__grid{ grid-template-columns: 1fr } }
+
+/* Left column stacks two compact cards */
+.contact__left{
+  display:grid;
+  grid-template-rows: 1fr auto;
+  gap:12px;
+  min-height: 100%;
+  height: 100%;
+  align-items: stretch;
+}
+/* Ensure the top card can expand to consume free space, eliminating the visible gap */
+.contact__left .card--sm:first-child{ height: 100% }
+.card--sm{ padding:12px 14px; border-radius:14px }
+
+.contact__list{ list-style:none; padding:0; margin:10px 0 0; display:grid; gap:14px }
+.contact__list li{ display:flex; align-items:center; gap:12px; padding:6px 0 }
+.contact__list .icon{ display:inline-grid; place-items:center; width:32px; height:32px; border-radius:999px; background: color-mix(in oklab, var(--a2), transparent 92%); border:1px solid color-mix(in oklab, var(--a2), var(--border) 60%) }
+/* Add a bit more separation between the heading and the list in the left contact card */
+.contact__card h3{ margin: 0 0 12px }
+
+.contact__form form{ display:grid; gap:14px }
+.field label{ display:block; font-weight:600; margin-bottom:6px }
+.input-wrap{ position:relative }
+.input-wrap .icon{ position:absolute; left:10px; top:50%; transform: translateY(-50%); color: var(--muted); pointer-events: none }
+/* Textarea variant: icon on the top-left and extra top padding to avoid overlap */
+.input-wrap.textarea .icon{ top:12px; transform:none }
+.input-wrap input, .input-wrap textarea{
+  width:100%;
+  padding: 10px 12px 10px 34px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background: var(--bg-soft);
+  color: var(--text);
+  font: inherit;
+}
+.input-wrap.textarea textarea{ padding-top: 10px }
+/* Make placeholder use the same font as inputs */
+.input-wrap input::placeholder,
+.input-wrap textarea::placeholder{
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: var(--muted);
+}
+.input-wrap textarea{ resize: vertical }
+.contact__actions{ display:flex; justify-content:flex-end }
+
+/* Follow Me icon row inside Contact */
+.contact__socials{ display:flex; gap:10px; align-items:center }
+.contact__social{ display:inline-grid; place-items:center; width:36px; height:36px; border-radius:12px; text-decoration:none; color: var(--text); background: color-mix(in oklab, var(--a2), transparent 92%); border:1px solid color-mix(in oklab, var(--a2), var(--border) 60%); transition: transform .12s ease, box-shadow .2s ease, border-color .2s ease }
+.contact__social:hover{ transform: translateY(-1px); box-shadow: 0 6px 14px rgba(8,36,84,.14); border-color: color-mix(in oklab, var(--a2), var(--border) 45%) }
+.contact__social svg{ width:18px; height:18px }
 
 /* ===== Skills (CATEGORIES with masonry-like tiles) ===== */
 #skills .section__title{ margin-bottom:6px }
@@ -310,7 +423,8 @@ main, .section, .hero { position: relative; z-index: 1; display:block; }
 /* ---- Skills/Achievements tabs as buttons ---- */
 .skills__tabs{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:10px 0 18px }
 .btn.btn--sm{ padding:8px 12px; min-height:36px; border-radius:12px; font-size:16px }
-.btn.ghost{ background: color-mix(in oklab, var(--bg), var(--card) 70%); color: var(--text); box-shadow: 0 1px 2px rgba(0,0,0,.04) }
+.btn.ghost{ background: color-mix(in oklab, var(--bg), var(--card) 70%); color: var(--text); box-shadow: 0 1px 2px rgba(0,0,0,.04); border: 1px solid color-mix(in oklab, var(--a2), var(--border) 60%) }
+.btn.ghost:hover{ box-shadow: 0 6px 14px rgba(8,36,84,.14); border-color: color-mix(in oklab, var(--a2), var(--border) 45%) }
 .skills__tabs .icon svg{ width:16px; height:16px; animation: float-icon 3s ease-in-out infinite }
 .btn:not(.ghost) .icon svg{ color:#fff }
 .btn.ghost .icon svg{ color: var(--text) }
