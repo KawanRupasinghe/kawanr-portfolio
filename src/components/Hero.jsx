@@ -24,7 +24,7 @@ export default function Hero() {
       {/* Your photo (place the image at /public/me.jpg) */}
       <div className="hero__photo-wrap rise">
         <img
-          src="/public/images/me.png"
+          src="/images/me.png"
           alt="Portrait of Kawan Rupasinghe"
           className="hero__photo"
           loading="eager"
