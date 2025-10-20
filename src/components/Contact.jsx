@@ -34,7 +34,7 @@ export default function Contact() {
         <div className="contact__left">
           {/* Contact information */}
           <aside className="contact__card card glass show card--sm">
-            <h3 style={{ marginTop: 0 }}>Contact Information</h3>
+            <h3 style={{ marginTop: 0 }} aria-hidden="true">Contact Information</h3>
             <ul className="contact__list">
               <li>
                 <a
