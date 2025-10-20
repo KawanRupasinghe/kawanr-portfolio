@@ -42,8 +42,8 @@ export default function Header() {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => map.set(entry.target.id, entry));
       // If hero is significantly visible, clear any active state and disable nav hover visuals
-      const heroEntry = map.get('top');
-      const heroVisible = !!(heroEntry && heroEntry.isIntersecting && heroEntry.intersectionRatio >= 0.3);
+    const heroEntry = map.get('top');
+    const heroVisible = !!(heroEntry && heroEntry.isIntersecting && heroEntry.intersectionRatio >= 0.3);
       document.documentElement.classList.toggle('at-hero', heroVisible);
       if (heroVisible) {
         links.forEach(a => a.classList.remove('active'));
@@ -62,8 +62,8 @@ export default function Header() {
       if (best) setActive(best);
     }, {
       root: null,
-      threshold: [0.15, 0.3, 0.5, 0.65, 0.8],
-      rootMargin: "-25% 0px -45% 0px" // favor middle slightly more
+      threshold: [0.1, 0.2, 0.3, 0.5, 0.7],
+      rootMargin: "-10% 0px -60% 0px" // engage hero sooner and keep at-hero until more scrolled
     });
 
     sections.forEach(sec => { observer.observe(sec); });
