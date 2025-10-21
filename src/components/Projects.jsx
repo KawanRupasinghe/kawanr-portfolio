@@ -1,4 +1,4 @@
-import { Code2, Layers, Package, PencilRuler, Server, X } from "lucide-react";
+import { ArrowUpRight, Code2, Layers, Package, PencilRuler, Server, X } from "lucide-react";
 import React from "react";
 import { profile } from "../data";
 
@@ -50,9 +50,12 @@ export default function Projects() {
                 )}
                 {p.desc && <p className="project__desc one-line" style={{ margin: 0 }}>{p.desc}</p>}
                 <div className="project__footer">
-                  <button className="btn btn--xs ghost" type="button" onClick={() => setOpen(p)} style={{ cursor:'pointer' }}>More</button>
+                  <button className="btn btn--xs ghost" type="button" aria-label={`View details for ${p.title}`} onClick={() => setOpen(p)} style={{ cursor:'pointer' }}>Details</button>
                   {p.link && (
-                    <a className="btn btn--xs outline" href={p.link} target="_blank" rel="noreferrer">View</a>
+                    <a className="btn btn--xs outline" href={p.link} target="_blank" rel="noreferrer" aria-label={`Open ${p.title}`}>
+                      <ArrowUpRight size={14} aria-hidden="true" />
+                      <span className="sr-only">Open</span>
+                    </a>
                   )}
                 </div>
               </article>
@@ -92,7 +95,12 @@ export default function Projects() {
                     </>
                   )}
                   <div className="modal__actions">
-                    {open.link && <a className="btn btn--sm outline" href={open.link} target="_blank" rel="noreferrer">View</a>}
+                    {open.link && (
+                      <a className="btn btn--sm outline" href={open.link} target="_blank" rel="noreferrer" aria-label={`Open ${open.title}`}>
+                        <ArrowUpRight size={14} aria-hidden="true" />
+                        <span className="sr-only">Open</span>
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>

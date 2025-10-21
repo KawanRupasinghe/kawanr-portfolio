@@ -62,35 +62,35 @@ export const profile = {
     {
       title: "The Glaze — Cake Shop Management System",
       stack: "Spring Boot, React.js, MySQL",
-      link: "#",
+      link: "https://github.com/KawanRupasinghe/the-glaze-cakeshop.git",
       image: "/images/projects/glaze-web.png",
-      desc: "Full-stack web app for cake shop operations.",
+      desc: "Full-stack web app for cake shops.",
       points: [
-        "Customer portal to browse, order, and track",
+        "Customer portal to browse, order and track status",
         "Admin dashboard for orders and inventory",
-        "Spring Boot REST APIs with MySQL",
-        "React (Vite) frontend; Agile with Jira"
+        "Spring Boot REST APIs with React and MySQL",
+        "Agile (SCRUM) development with Jira and GitHub"
       ]
     },
-    {
-      title: "The Glaze — Mobile App Prototype",
-      stack: "Figma, UI/UX Design",
-      link: "#",
-      image: "/images/projects/glaze-mobile.png",
-      desc: "Mobile app prototype for customers and admins.",
+      {
+      title: "AquaChamps - Swimming Tournament Management System",
+      stack: ".NET, C#, React.js, AzureSQL",
+      link: "https://github.com/KawanRupasinghe/aquachamps-stms.git",
+      image: "/images/projects/aquachamps.png",
+      desc: "Web app for swimming tournaments.",
       points: [
-        "HCI-driven flows and component library",
-        "Ordering and order-tracking journeys",
-        "Admin screens for product and orders",
-        "High-fidelity frames and clickable prototype"
+        "Admin dashboard for managing tournaments, players and results",
+        "Event-based ranking and point allocation system",
+        "Real-time leaderboard with filtering and PDF export",
+        "Secure and scalable with ASP.NET, React, and Azure"
       ]
     },
     {
       title: "Fault-Tolerant Distributed Logging System",
       stack: "Spring Boot, MongoDB, Raft",
-      link: "#",
+      link: "https://github.com/KawanRupasinghe/distributed-logging-system.git",
       image: "/images/projects/distributed-logging.jpg",
-      desc: "Distributed logging with Raft and failover.",
+      desc: "Distributed logging system with Raft.",
       points: [
         "Leader election and log replication via Raft",
         "Automatic failover and consistency",
@@ -98,12 +98,39 @@ export const profile = {
         "MongoDB-backed durable log storage"
       ]
     },
+
+    {
+      title: "The Glaze — Mobile App Prototype",
+      stack: "Figma, UI/UX Design",
+      link: "https://www.figma.com/design/zY4f71tZt8dxoukdY0Mshj/The-Glaze?node-id=46-5&t=zQm2D26BY1R5uaEt-1",
+      image: "/images/projects/glaze-mobile.png",
+      desc: "Mobile app prototype for cake shops.",
+      points: [
+        "Real-time order tracking with payment upload verification",
+        "Admin dashboard for managing cakes, prices, and order statuses",
+        "Image-focused catalog with simple navigation and filters",
+        "High fidelity prototype and smooth navigation flow"
+      ]
+     },
+     {
+      title: "FuelGo - Mobile App Prototype",
+      stack: "Figma, UI/UX Design",
+      link: "https://www.figma.com/design/XR4TDUN040rR5c7cgVoy4v/FuelGo?node-id=132-16378&t=mkTL2CGV1Lzg2pkt-1",
+      image: "/images/projects/fuelgo.png",
+      desc: "UI/UX prototype for fuel station app.",
+      points: [
+       "Real-time fuel order tracking and status updates",
+       "Admin dashboard for managing orders and payments",
+       "Intuitive fuel catalog with search and filter options",
+       "Low fidelity wireframes and high-fidelity prototype"
+      ]
+    },
     {
       title: "FormLangPP — DSL for HTML form generation",
       stack: "Flex & Bison (Lex & Yacc), C",
-      link: "#",
+      link: "https://github.com/KawanRupasinghe/FormLangPP-DSL.git",
       image: "/images/projects/formlangpp.jpg",
-      desc: "DSL to generate HTML forms from grammar.",
+      desc: "DSL to generate HTML forms.",
       points: [
         "Lexer and parser with Flex & Bison",
         "Grammar for fields and validation",
@@ -116,7 +143,7 @@ export const profile = {
       stack: "ESP32 microcontroller, Firebase, JavaScript, HTML/CSS",
       link: "#",
       image: "/images/projects/aquamonitor.jpg",
-      desc: "ESP32-based real-time aquarium monitoring.",
+      desc: "IoT based real-time aquarium monitoring.",
       points: [
         "Sensors for temperature, level, turbidity",
         "Wi‑Fi push to Firebase Realtime DB",
@@ -124,31 +151,5 @@ export const profile = {
         "Modular hardware/firmware design"
       ]
     },
-    {
-      title: "AquaChamps - Swimming Tournament Management System",
-      stack: ".NET, C#, React.js, AzureSQL",
-      link: "#",
-      image: "/images/projects/aquachamps.png",
-      desc: ".NET-based tournament management app.",
-      points: [
-        "Event scheduling and lane assignments",
-        "Athlete registration and heats",
-        "Results tracking and leaderboard",
-        "Admin portal backed by Azure SQL"
-      ]
-    },
-    {
-      title: "FuelGo - Mobile App Prototype",
-      stack: "Figma, UI/UX Design",
-      link: "#",
-      image: "/images/projects/fuelgo.png",
-      desc: "UI/UX prototype for fuel station app.",
-      points: [
-        "Station locator and queue status screens",
-        "Refueling flow with clear CTAs",
-        "Design system and components",
-        "Clickable prototype for user tests"
-      ]
-    }
   ]
 };
