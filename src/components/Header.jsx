@@ -128,7 +128,11 @@ export default function Header() {
 
   return (
     <header className="container header">
-      <a className="brand" href="#top" aria-label="Home">kawanr</a>
+      <a className="brand" href="#top" aria-label="Home">
+        <img className="brand__logo brand__logo--light" src="/images/favicon-light.png" alt="" aria-hidden="true" />
+        <img className="brand__logo brand__logo--dark" src="/images/favicon-dark.png" alt="" aria-hidden="true" />
+        <span className="brand__text">kawanr</span>
+      </a>
 
       <div className="header__right">
         {/* Theme toggle (mobile: next to hamburger) */}

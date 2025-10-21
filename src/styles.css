@@ -94,8 +94,13 @@ main, .section, .hero { position: relative; z-index: 1; display:block; }
 }
 
 /* ===== Brand & Nav ===== */
-.brand{ font-family: var(--brand-font); font-weight:700; letter-spacing:.6px; text-decoration:none; color:var(--text); font-size: clamp(18px, 2.2vw, 22px); line-height:1; }
+.brand{ display:inline-flex; align-items:center; gap:8px; font-family: var(--brand-font); font-weight:700; letter-spacing:.6px; text-decoration:none; color:var(--text); font-size: clamp(18px, 2.2vw, 22px); line-height:1; }
 :root[data-theme="light"] .brand{ color: var(--a1) }
+.brand__logo{ width:40px; height:40px; aspect-ratio:1/1; border-radius:50%; display:block; object-fit:cover }
+@media (max-width:480px){ .brand__logo{ width:28px; height:28px } }
+:root[data-theme="light"] .brand__logo--dark{ display:none }
+:root[data-theme="dark"] .brand__logo--light{ display:none }
+@media (max-width:480px){ .brand__text{ display:none } }
 .nav{ display:flex; align-items:center; gap:18px; flex-wrap: wrap; }
 .nav a{ color:var(--text); text-decoration:none; opacity:.9; white-space:nowrap; padding:6px 10px; border-radius:10px; transition: background .2s ease, opacity .15s ease; }
 .nav a:hover{ opacity:1; background: color-mix(in oklab, var(--a2), transparent 88%); }
