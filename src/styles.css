@@ -94,8 +94,13 @@ main, .section, .hero { position: relative; z-index: 1; display:block; }
 }
 
 /* ===== Brand & Nav ===== */
-.brand{ font-family: var(--brand-font); font-weight:700; letter-spacing:.6px; text-decoration:none; color:var(--text); font-size: clamp(18px, 2.2vw, 22px); line-height:1; }
+.brand{ display:inline-flex; align-items:center; gap:8px; font-family: var(--brand-font); font-weight:700; letter-spacing:.6px; text-decoration:none; color:var(--text); font-size: clamp(18px, 2.2vw, 22px); line-height:1; }
 :root[data-theme="light"] .brand{ color: var(--a1) }
+.brand__logo{ width:40px; height:40px; aspect-ratio:1/1; border-radius:50%; display:block; object-fit:cover }
+@media (max-width:480px){ .brand__logo{ width:28px; height:28px } }
+:root[data-theme="light"] .brand__logo--dark{ display:none }
+:root[data-theme="dark"] .brand__logo--light{ display:none }
+@media (max-width:480px){ .brand__text{ display:none } }
 .nav{ display:flex; align-items:center; gap:18px; flex-wrap: wrap; }
 .nav a{ color:var(--text); text-decoration:none; opacity:.9; white-space:nowrap; padding:6px 10px; border-radius:10px; transition: background .2s ease, opacity .15s ease; }
 .nav a:hover{ opacity:1; background: color-mix(in oklab, var(--a2), transparent 88%); }
@@ -250,21 +255,22 @@ main, .section, .hero { position: relative; z-index: 1; display:block; }
 .modal__header{ display:flex; align-items:center; justify-content:space-between; gap:10px; position: sticky; top:0; background: var(--bg-soft); padding-bottom: 8px; z-index: 2 }
 .modal__header .icon-btn{ background: var(--bg-soft); border-color: color-mix(in oklab, var(--a2), var(--border) 55%) }
 :root[data-theme="light"] .modal__header .icon-btn svg{ color: #0a1222 }
-.modal__content--split{ display:grid; grid-template-columns: 1.1fr 1.9fr; gap:24px; align-items:start }
+.modal__content--split{ display:grid; grid-template-columns: 1.1fr 1.9fr; gap:24px; align-items:stretch }
+.modal__content--split > *{ min-height: 0 }
 .modal__content--figma{ grid-template-columns: 0.9fr 2.1fr }
-.modal__media{ border-radius:12px; overflow:hidden; border:1px solid var(--border); background: var(--bg-soft) }
-.modal__media img{ display:block; width:100%; height:auto; object-fit:cover }
-.modal__media--sm img{ max-height: 280px; object-fit: contain }
-.modal__body{ text-align:left; padding-right: 6px; padding-left: 6px }
+.modal__media{ border-radius:12px; overflow:hidden; border:1px solid var(--border); background: var(--bg-soft); display:flex; height:100% }
+.modal__media img{ display:block; width:100%; height:100%; object-fit:cover }
+/* Ensure figma variant also aligns top/bottom; allow slight letterboxing via background if needed */
+.modal__media--sm img{ max-height: none; object-fit: cover }
+.modal__body{ text-align:left; padding-right: 6px; padding-left: 6px; display:flex; flex-direction:column; align-self:stretch; min-height:0 }
 /* Ensure tags align left in modal body */
 .modal .tags{ justify-content: flex-start }
 @media (max-width: 700px){
   .modal__content--split{ grid-template-columns: 1fr }
 }
 .modal .card__list{ padding-left: 6px }
-/* Actions anchored bottom-right within right column */
-.modal__body{ position: relative; padding-bottom: 44px }
-.modal__actions{ position: absolute; right: 0; bottom: 0; display:flex; gap:8px }
+/* Actions participate in flow; align to bottom via flex so columns match heights */
+.modal__actions{ position: static; display:flex; gap:8px; align-self:flex-end; margin-top:auto }
 
 /* ===== About (trimmed; unchanged from previous) ===== */
 .about__lead{ margin:8px auto 18px; font-size:16px; color:var(--text); opacity:.95; max-width:72ch }

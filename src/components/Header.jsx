@@ -90,7 +90,10 @@ export default function Header() {
 
   // Close mobile nav on resize to larger screens
   React.useEffect(() => {
-    const onResize = () => { if (window.innerWidth > 900) closeNav(); };
+    const onResize = () => {
+      if (window.innerWidth > 900) closeNav();
+      setIsMobile(window.innerWidth <= 900);
+    };
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, []);
@@ -114,16 +117,31 @@ export default function Header() {
     };
   }, [open]);
 
+  // Track mobile breakpoint to place theme toggle appropriately
+  const [isMobile, setIsMobile] = React.useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.innerWidth <= 900;
+  });
+  React.useEffect(() => {
+    setIsMobile(window.innerWidth <= 900);
+  }, []);
+
   return (
     <header className="container header">
-      <a className="brand" href="#top" aria-label="Home">kawanr</a>
+      <a className="brand" href="#top" aria-label="Home">
+        <img className="brand__logo brand__logo--light" src="/images/favicon-light.png" alt="" aria-hidden="true" />
+        <img className="brand__logo brand__logo--dark" src="/images/favicon-dark.png" alt="" aria-hidden="true" />
+        <span className="brand__text">kawanr</span>
+      </a>
 
       <div className="header__right">
-        {/* Theme toggle (always visible next to hamburger) */}
-        <button aria-label="Toggle theme" className="icon-btn theme-toggle" onClick={toggleTheme}>
-          <span className="theme-icon show-in-dark"><Sun size={18} /></span>
-          <span className="theme-icon show-in-light"><Moon size={18} /></span>
-        </button>
+        {/* Theme toggle (mobile: next to hamburger) */}
+        {isMobile && (
+          <button aria-label="Toggle theme" className="icon-btn theme-toggle" onClick={toggleTheme}>
+            <span className="theme-icon show-in-dark"><Sun size={18} /></span>
+            <span className="theme-icon show-in-light"><Moon size={18} /></span>
+          </button>
+        )}
 
         {/* Mobile menu toggle (visible on small screens) */}
         <button
@@ -141,6 +159,13 @@ export default function Header() {
           <a href="#experience" onClick={closeNav}>Experience</a>
           <a href="#projects" onClick={closeNav}>Projects</a>
           <a className="btn" href="#contact" onClick={closeNav}>Contact</a>
+          {/* Theme toggle (desktop: keep inside nav as before) */}
+          {!isMobile && (
+            <button aria-label="Toggle theme" className="icon-btn theme-toggle" onClick={toggleTheme}>
+              <span className="theme-icon show-in-dark"><Sun size={18} /></span>
+              <span className="theme-icon show-in-light"><Moon size={18} /></span>
+            </button>
+          )}
         </nav>
       </div>
       {/* Close menu when clicking outside (use capture on document) */}
