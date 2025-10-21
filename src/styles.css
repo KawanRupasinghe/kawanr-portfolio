@@ -102,16 +102,15 @@ main, .section, .hero { position: relative; z-index: 1; display:block; }
 /* Keep hover-like background when link is active by scroll */
 .nav a.active{ opacity:1; background: color-mix(in oklab, var(--a2), transparent 82%); }
 /* When at the hero, suppress nav hover/active background to keep it clean */
-:root.at-hero .nav a:hover{ background: transparent; opacity:.9 }
-:root.at-hero .nav a.active{ background: transparent; opacity:.9 }
-/* Ensure About link doesn't show hover while at hero */
-:root.at-hero .nav a[href="#about"]:hover{ background: transparent !important; opacity:.9 }
-/* Also neutralize the theme toggle hover while at hero */
-:root.at-hero .icon-btn:hover{ transform:none; box-shadow:none; border-color: color-mix(in oklab, var(--a2), var(--border) 70%) }
+/* Keep hovers consistent across sections (no suppression at hero) */
 .icon-btn{ display:grid; place-items:center; width:36px; height:36px; border-radius:12px; border:1px solid color-mix(in oklab, var(--a2), var(--border) 70%); background: var(--bg-soft); cursor:pointer; transition: transform .12s ease, box-shadow .2s ease, border-color .2s ease; }
 .icon-btn:hover{ transform: translateY(-1px); box-shadow: 0 6px 16px rgba(8,36,84,.18), 0 1px 2px rgba(0,0,0,.06); border-color: color-mix(in oklab, var(--a2), var(--border) 45%) }
 .theme-icon{ display:none } :root[data-theme="dark"] .show-in-dark{display:inline-flex} :root[data-theme="light"] .show-in-light{display:inline-flex}
 .icon-btn svg{ width:18px; height:18px; color:var(--text); opacity:.95 }
+
+/* Header right cluster: theme toggle + hamburger */
+.header__right{ display:flex; align-items:center; gap:10px }
+.theme-toggle{ display:inline-grid }
 
 /* ===== Hero ===== */
 .hero{ display:grid; grid-template-columns: 1.2fr .8fr; gap:24px; padding:0px 0 16px; align-items: center; min-height: calc(100vh - var(--header-h) - 8px); }
@@ -123,6 +122,45 @@ main, .section, .hero { position: relative; z-index: 1; display:block; }
 .blurb{ margin:0 0 16px; color:var(--muted); font-size: clamp(15px, 1.9vw, 18px) }
 .hero__photo-wrap{ display:grid; place-items:center }
 .hero__photo{ width:min(320px, 90%); aspect-ratio:1 / 1; object-fit:cover; border-radius:50%; border:1px solid color-mix(in oklab, var(--a2), var(--border) 60%); box-shadow: 0 14px 40px rgba(8,36,84,.25), 0 2px 6px rgba(0,0,0,.08) }
+
+/* ===== Mobile / small-screen navigation ===== */
+/* Hide native nav on small screens and show hamburger */
+.mobile-menu-btn{ display:none }
+@media (max-width:900px){
+  .nav{ position: fixed; top: calc(var(--header-h) + 8px); left: 50%; transform: translate(-50%, -8px); width:min(640px, 92%); background: color-mix(in oklab, var(--bg), transparent 78%); backdrop-filter: blur(10px) saturate(1.05); -webkit-backdrop-filter: blur(10px) saturate(1.05); padding: 12px; display:flex; flex-direction:column; gap:8px; align-items:stretch; border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 16px 36px rgba(8,36,84,.28); opacity:0; pointer-events:none; transition: opacity .18s ease, transform .18s ease; z-index:45 }
+  .nav a{ padding:10px 12px; border-radius:10px }
+  .nav a:hover{ background: color-mix(in oklab, var(--a2), transparent 86%); }
+  .nav.nav--open{ opacity:1; transform: translate(-50%, 0); pointer-events:auto }
+  .mobile-menu-btn{ display:inline-grid; margin-left:auto }
+  /* Keep header items compact on small screens */
+  .header{ padding:10px 0; min-height:56px }
+}
+
+/* When nav-open, prevent body scroll (document level class toggled by JS) */
+:root.nav-open, :root.nav-open body{ overflow: hidden }
+
+/* Backdrop behind mobile nav */
+.nav-backdrop{ position: fixed; inset: 0; z-index: 40; background: rgba(3, 10, 22, .45); backdrop-filter: blur(2px) }
+
+/* ===== Additional small-screen tweaks ===== */
+@media (max-width:480px){
+  :root{ --header-h: 60px }
+  body{ padding-top: calc(var(--header-h) + 8px) }
+  /* Reduce hero photo and tighten spacing */
+  .hero__photo{ width:min(220px, 64%); }
+  .gradient-title{ font-size: clamp(28px, 8vw, 44px) }
+  .blurb{ font-size:14px }
+  /* Project grid stacks earlier for very small phones */
+  .grid{ grid-template-columns: 1fr !important }
+  .container{ width: calc(100% - 28px) }
+  .section{ padding:28px 0 }
+}
+
+/* Improve modal fit on tiny screens */
+@media (max-width:420px){
+  .modal{ width: 96%; margin: 8px auto; border-radius:12px }
+  .modal__actions{ position: static; margin-top: 10px; justify-content: flex-start }
+}
 
 /* ===== Buttons & Chips ===== */
 .btn{ --g: linear-gradient(90deg, var(--a1), var(--a2)); display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:10px 14px; min-height:40px; border-radius:14px; border:0; background:var(--g); color:#fff; text-decoration:none; box-shadow: 0 6px 16px rgba(8,36,84,.18), 0 1px 2px rgba(0,0,0,.06); transition: transform .12s ease, box-shadow .2s ease; cursor: pointer }
@@ -237,7 +275,8 @@ main, .section, .hero { position: relative; z-index: 1; display:block; }
   .about__lead_2{ max-width: 72ch }
 }
 .about__meta{ display:grid; gap:10px; grid-template-columns: repeat(4, minmax(0,1fr)) }
-@media (max-width:900px){ .about__meta{ grid-template-columns:1fr } }
+@media (max-width:1024px){ .about__meta{ grid-template-columns: repeat(2, minmax(0,1fr)) } }
+@media (max-width:600px){ .about__meta{ grid-template-columns:1fr } }
 .about__meta-item{ background:var(--bg-soft); border:1px solid var(--border); border-radius:12px; padding:12px 14px; transition: transform .15s, box-shadow .2s, border-color .2s }
 .about__meta-item:hover{ transform:translateY(-2px); box-shadow:0 12px 26px rgba(8,36,84,.20); border-color: color-mix(in oklab, var(--a2), var(--border) 52%) }
 .about__meta-key{ display:block; font-size:12px; letter-spacing:.2px; color:var(--muted); margin-bottom:4px; text-transform:uppercase }
@@ -250,6 +289,8 @@ main, .section, .hero { position: relative; z-index: 1; display:block; }
 /* About meta: left align content and reduce width for consistency */
 .about .about__meta, .about .about__meta-item{ text-align: left }
 .about .about__meta{ grid-template-columns: repeat(4, minmax(0,1fr)) }
+@media (max-width:1024px){ .about .about__meta{ grid-template-columns: repeat(2, minmax(0,1fr)) } }
+@media (max-width:600px){ .about .about__meta{ grid-template-columns: 1fr } }
 .about__link{ color:var(--a2); text-decoration:none }
 .about__link:hover{ text-decoration:underline }
 /* In light mode, make email/GitHub links appear as black text for About section */
@@ -420,6 +461,9 @@ main, .section, .hero { position: relative; z-index: 1; display:block; }
 :root.at-hero .nav a.btn:hover,
 :root.at-hero .nav a.btn.active{ background: transparent; color: var(--text); opacity:.9; box-shadow:none }
 
+/* Reduce Contact button size globally to feel lighter */
+.nav .btn{ padding:8px 12px; min-height:34px; border-radius:12px; font-size:14px }
+
 /* ---- Skills/Achievements tabs as buttons ---- */
 .skills__tabs{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:10px 0 18px }
 .btn.btn--sm{ padding:8px 12px; min-height:36px; border-radius:12px; font-size:16px }
@@ -445,11 +489,31 @@ main, .section, .hero { position: relative; z-index: 1; display:block; }
   .timeline.zigzag:before{ left: 18px; transform:none }
   .timeline.zigzag .timeline__item{ width:100%; left:0; text-align:left; padding-left:36px }
   .timeline.zigzag .timeline__item .timeline__dot{ left:10px }
+  .timeline.zigzag .timeline__item.right .timeline__dot{ left:10px }
+}
+@media (max-width:1100px) and (min-width:901px){
+  .timeline.zigzag .timeline__item{ width:48%; }
+}
+/* Tiny screens: increase spacing for readability and prevent overflow */
+@media (max-width:600px){
+  .timeline.zigzag{ padding: 0 8px }
+  .timeline.zigzag:before{ left: 10px }
+  .timeline.zigzag .timeline__item{ padding-left: 0; padding-right: 8px; margin-bottom: 14px; position: relative; width: 100%; left: 0; text-align: left }
+  .timeline.zigzag .timeline__item.left{ left: 0; text-align: left }
+  .timeline.zigzag .timeline__item.right{ left: 0; text-align: left }
+  .timeline.zigzag .timeline__item .timeline__card{ font-size: 14px; line-height: 1.6; margin-left: 36px }
+  /* Make dots slightly smaller on tiny screens and align center on rail (rail at 10px, dot 12px => left 4px) */
+  .timeline.zigzag .timeline__item .timeline__dot{ left: 4px !important; width:12px; height:12px; box-shadow: 0 0 0 3px color-mix(in oklab, var(--a2), transparent 82%) }
+  /* Connector from rail to the card */
+  .timeline.zigzag .timeline__item::before{
+    content:""; position:absolute; left: 10px; top: 16px; width: 26px; height: 2px; background: var(--border);
+  }
 }
 
 /* ===== Cards / Projects / Footer (trimmed) ===== */
 .grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:16px }
-@media (max-width:900px){ .grid{ grid-template-columns:1fr } }
+@media (max-width:900px){ .grid{ grid-template-columns: repeat(2, 1fr) } }
+@media (max-width:600px){ .grid{ grid-template-columns:1fr } }
 .card{ background: var(--bg-soft); border:1px solid var(--border); border-radius:16px; padding:16px; transition: transform .2s, box-shadow .25s, border-color .2s }
 .card:hover{ transform: translateY(-2px); box-shadow: 0 8px 18px rgba(8,36,84,.16); border-color: color-mix(in oklab, var(--a2), var(--border) 45%) }
 
