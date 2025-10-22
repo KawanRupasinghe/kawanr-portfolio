@@ -1,5 +1,6 @@
 import { ArrowUpRight, Code2, Layers, Package, PencilRuler, Server, X } from "lucide-react";
 import React from "react";
+import { createPortal } from "react-dom";
 import { profile } from "../data";
 
 const crestFor = (title, stack) => {
@@ -14,6 +15,15 @@ const crestFor = (title, stack) => {
 export default function Projects() {
   const [open, setOpen] = React.useState(null);
   const close = () => setOpen(null);
+  React.useEffect(() => {
+    const root = document.documentElement;
+    if (open) {
+      root.classList.add('modal-open');
+    } else {
+      root.classList.remove('modal-open');
+    }
+    return () => root.classList.remove('modal-open');
+  }, [open]);
   const tagsOf = (stack) => String(stack || "").split(',').map(s => s.trim()).filter(Boolean);
   const pointsOf = (p) => {
     const limitWords = (s, n = 14) => {
@@ -62,9 +72,9 @@ export default function Projects() {
             );
           })}
         </div>
-        {open && (
-          <div className="modal-backdrop" onClick={close}>
-            <div className="modal card" role="dialog" aria-modal="true" aria-label={`${open.title} details`} onClick={(e) => e.stopPropagation()}>
+    {open && createPortal(
+            <div className="modal-backdrop" onClick={close}>
+              <div className="modal card" role="dialog" aria-modal="true" aria-label={`${open.title} details`} onClick={(e) => e.stopPropagation()}>
               <header className="modal__header">
                 <h3 className="section__title" style={{ margin: 0 }}>{open.title}</h3>
                 <button className="icon-btn" aria-label="Close" onClick={close}><X size={16} /></button>
@@ -106,8 +116,8 @@ export default function Projects() {
               </div>
               ); })()}
             </div>
-          </div>
-        )}
+            </div>
+          , document.body)}
       </section>
   );
 }

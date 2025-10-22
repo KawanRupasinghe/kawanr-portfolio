@@ -79,8 +79,9 @@ main, .section, .hero { position: relative; z-index: 1; display:block; }
 /* ===== Header (fixed) ===== */
 .header{
   position: fixed; top: 0; left: 50%; transform: translateX(-50%);
-  width: min(1120px, 92%); z-index: 50; padding: 14px 0; min-height: var(--header-h);
+  width: min(1120px, 92%); z-index: 300; padding: 14px 0; min-height: var(--header-h);
   display:flex; align-items:center; justify-content:space-between;
+  pointer-events: auto;
 }
 .header::before{
   content:""; position: fixed; top:0; left:50%; transform:translateX(-50%);
@@ -106,6 +107,8 @@ main, .section, .hero { position: relative; z-index: 1; display:block; }
 .nav a:hover{ opacity:1; background: color-mix(in oklab, var(--a2), transparent 88%); }
 /* Keep hover-like background when link is active by scroll */
 .nav a.active{ opacity:1; background: color-mix(in oklab, var(--a2), transparent 82%); }
+/* When link is active and hovered, make hover take precedence (slightly stronger bg) */
+.nav a.active:hover{ background: color-mix(in oklab, var(--a2), transparent 78%); }
 /* When at the hero, suppress nav hover/active background to keep it clean */
 /* Keep hovers consistent across sections (no suppression at hero) */
 .icon-btn{ display:grid; place-items:center; width:36px; height:36px; border-radius:12px; border:1px solid color-mix(in oklab, var(--a2), var(--border) 70%); background: var(--bg-soft); cursor:pointer; transition: transform .12s ease, box-shadow .2s ease, border-color .2s ease; }
@@ -143,6 +146,7 @@ main, .section, .hero { position: relative; z-index: 1; display:block; }
 
 /* When nav-open, prevent body scroll (document level class toggled by JS) */
 :root.nav-open, :root.nav-open body{ overflow: hidden }
+:root.modal-open, :root.modal-open body{ overflow: hidden }
 
 /* Backdrop behind mobile nav */
 .nav-backdrop{ position: fixed; inset: 0; z-index: 40; background: rgba(3, 10, 22, .45); backdrop-filter: blur(2px) }
@@ -250,7 +254,7 @@ main, .section, .hero { position: relative; z-index: 1; display:block; }
 :root[data-theme="light"] .project-card .btn.ghost{ color: var(--a1) }
 
 /* Modal */
-.modal-backdrop{ position:fixed; inset:0; background: rgba(0,0,0,.45); backdrop-filter: blur(2px); display:grid; place-items:center; z-index:100 }
+.modal-backdrop{ position:fixed; inset:0; background: rgba(0,0,0,.45); backdrop-filter: blur(2px); display:grid; place-items:center; z-index:1000 }
 .modal{ width:min(720px, 92%); max-height: 80vh; overflow:auto; position: relative }
 .modal__header{ display:flex; align-items:center; justify-content:space-between; gap:10px; position: sticky; top:0; background: var(--bg-soft); padding-bottom: 8px; z-index: 2 }
 .modal__header .icon-btn{ background: var(--bg-soft); border-color: color-mix(in oklab, var(--a2), var(--border) 55%) }
@@ -463,9 +467,7 @@ main, .section, .hero { position: relative; z-index: 1; display:block; }
 /* Avoid hover background on button-style nav link to prevent visual overlap */
 .nav a.btn:hover,
 .nav a.btn.active{ background: var(--g); color:#fff; opacity:1 }
-/* Also suppress the Contact button hover/active when at hero */
-:root.at-hero .nav a.btn:hover,
-:root.at-hero .nav a.btn.active{ background: transparent; color: var(--text); opacity:.9; box-shadow:none }
+/* Keep Contact button hover/active consistent across sections (no hero suppression) */
 
 /* Reduce Contact button size globally to feel lighter */
 .nav .btn{ padding:8px 12px; min-height:34px; border-radius:12px; font-size:14px }
