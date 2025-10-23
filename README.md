@@ -33,36 +33,38 @@ A minimal personal portfolio built with **React + Vite** and hand-crafted **HTML
 
 ## 📁 Project Structure
 
+```text
 kawanr-portfolio/
 ├─ public/
-│ ├─ images/
-│ │ ├─ me.png
-│ │ ├─ favicon-light.png
-│ │ └─ favicon-dark.png
-│ ├─ \_redirects
-│ └─ index.html # Root HTML + Netlify form template
+│  ├─ images/
+│  │  ├─ me.png
+│  │  ├─ favicon-light.png
+│  │  └─ favicon-dark.png
+│  ├─ _redirects                 
+│  └─ index.html                 # Root HTML + Netlify form template
 ├─ src/
-│ ├─ components/
-│ │ ├─ Header.jsx
-│ │ ├─ Hero.jsx
-│ │ ├─ About.jsx
-│ │ ├─ Skills.jsx # Skills + Achievements tabs
-│ │ ├─ Experience.jsx
-│ │ ├─ Projects.jsx
-│ │ └─ Contact.jsx # Netlify form
-│ ├─ styles/
-│ │ └─ style.css # Blue theme (light/dark), animations, layout
-│ ├─ data.jsx # Profile
-│ ├─ App.jsx
-│ └─ main.jsx
+│  ├─ components/
+│  │  ├─ Header.jsx
+│  │  ├─ Hero.jsx
+│  │  ├─ About.jsx
+│  │  ├─ Skills.jsx              
+│  │  ├─ Experience.jsx
+│  │  ├─ Projects.jsx
+│  │  └─ Contact.jsx             # Netlify form
+│  ├─ styles/
+│  │  └─ style.css               # theme, animations, layout
+│  ├─ data.jsx                   # Profile + content
+│  ├─ App.jsx
+│  └─ main.jsx
 ├─ tests/
-│ ├─ setup.js # Vitest + RTL setup, jest-dom matchers
-│ ├─ App.test.jsx
-│ └─ Header.test.jsx
+│  ├─ setup.js                   # Vitest + RTL setup, jest-dom matchers
+│  ├─ App.test.jsx
+│  └─ Header.test.jsx
 ├─ .github/workflows/ci.yml
-├─ netlify.toml # Ensures Forms post-processing stays on
+├─ netlify.toml                  # Keep Forms post-processing on
 ├─ package.json
 └─ README.md
+```
 
 ---
 
