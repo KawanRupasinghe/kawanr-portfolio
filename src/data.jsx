@@ -39,6 +39,17 @@ export const profile = {
 
   experience: [
     {
+      company: "Sri Lanka Telecom PLC",
+      role: "Software Engineer Intern",
+      period: "Jan 2026 – Present",
+      points: [
+        "Worked on real-world enterprise application development using ASP.NET Core",
+        "Developed and maintained frontend interfaces using Angular and React",
+        "Contributed to the Network KPI Management System for automated KPI calculation and performance tracking",
+        "Worked on Integrated Network Management System to simulate network fault detection, alarm handling, and network impact analysis"
+      ]
+    },
+    {
       company: "SLIIT",
       role: "Research Intern — Frontend Developer",
       period: "Dec 2024 – Feb 2025",
